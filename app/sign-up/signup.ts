@@ -1,32 +1,28 @@
 "use server"
+import prisma from "@/lib/prisma"
+import { redirect } from "next/navigation"
 
-import prisma from '@/lib/prisma'
-
-const signUp = async (formData: FormData) => {
-  const username = formData.get('username') as string
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-
-  if (!email || !password) {
-    console.error('Email or password is missing')
-    return
-  }
-
+export default async function signUp(formData: FormData) {
+  const name = formData.get("name") as string
+  const email = formData.get("email") as string
+  const password = formData.get("password") as string
+  
   try {
-    // ใช้ Prisma เพื่อสร้างผู้ใช้โดยตรง
-    const user = await prisma.user.create({
+    const existingUser = await prisma.user.findUnique({where: { email }})
+    if (existingUser) {
+      throw new Error("This user already exists")
+    }
+
+    const newUser = await prisma.user.create({
       data: {
+        name,
         email,
-        password, // อย่าลืมเข้ารหัสรหัสผ่านก่อนบันทึก (เช่น ใช้ bcrypt)
+        password,
       },
     })
-
-    console.log('User registered successfully:', user)
-    return user
-  } catch (error) {
-    console.error('Error during sign-up:', error)
-    throw new Error('Failed to register user')
+    console.log("User created:", newUser)
+    redirect("/sign-in")
+  } catch (error:any) {
+    throw new Error(error.message || "Error creating user")
   }
 }
-
-export default signUp
