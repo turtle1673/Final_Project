@@ -1,30 +1,22 @@
-"use client";
-import { useState } from "react";
-import signUp from "./signup";
+"use client"
+import { useState } from "react"
+import signUp from "./signup"
 
 export default function page() {
   const [error, setError] = useState<string | null>(null);
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    if (!name || !email || !password) {
-      setError("Please fill in all fields");
-      return;
-    }
+
     setError(null);
 
-    try {
-      await signUp(formData);
-      setTimeout(() => {
-        window.location.href = "/sign-in";
-      }, 1000);
-    } catch (error: any) {
-      setError(error.message || "An unexpected error occurred");
+    const result = await signUp(formData)
+    if (result.error) {
+      setError(result.error);
+      return
     }
-  };
+ 
+  }
   return (
     <>
       <form
