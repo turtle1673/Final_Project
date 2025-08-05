@@ -67,7 +67,7 @@ model StockItem {
   quantity  Int
   recQuantity Int
   unit      String
-  imgUrl   String
+  imgUrl   String?
   category  String
 
   updatedBy UpdateStock[]
