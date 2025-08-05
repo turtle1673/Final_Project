@@ -45,7 +45,7 @@ function Navbar() {
 
 // Data for drinks
 const todaySpecial = [
-  { name: 'นมสด', price: 45, image: '/drinks/milk.jpg' },
+  { name: 'นมสด', price: 45, image: '/drinks/imi.jpg' },
   { name: 'ชาไทย', price: 45, image: '/drinks/thaitea.jpg' },
   { name: 'ชาเขียว', price: 45, image: '/drinks/greentea.jpg' },
   { name: 'ไมโล', price: 55, image: '/drinks/milo.jpg' },
@@ -81,9 +81,9 @@ function CustomerPage() {
     <div className="pt-20 min-h-screen flex justify-center items-start bg-[#F6EEE0] px-4 pb-8 w-full">
       
       <div className="w-full max-w-screen-lg">
-
+        <div id='special'></div>
         {/* Table Number */}
-        <h2 id="special" className="text-lg font-semibold mt-4 text-black">
+        <h2 className="text-2xl font-semibold mt-4 text-black">
           Table number:{' '}
           <input
             className="border-b-2 border-black bg-transparent outline-none"
@@ -93,73 +93,89 @@ function CustomerPage() {
         </h2>
 
         {/* Today’s Special */}
-        <section className="mt-6">
-          <h3 className="text-md font-bold mb-2 text-black">Today's Special</h3>
+        <div className='mt-6 border border-black p-2 rounded-sm bg-white'>
+          <section className="mt-6">
+          <h3 className="text-2xl font-bold mb-2 text-black">Today's Special</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {todaySpecial.map((item, i) => (
-              <div key={i} className="text-center bg-white p-2 rounded shadow">
+              <div key={i} className="relative text-center bg-white p-2 rounded">
+              <div className="relative w-fit mx-auto p-2"> {/* เพิ่ม padding */}
                 <Image
                   src={item.image}
                   alt={item.name}
                   width={100}
                   height={100}
-                  className="mx-auto rounded"
+                  className="rounded border border-black w-52" // ลดจาก w-60 → w-52
                 />
-                <p>{item.name}</p>
-                <p>฿{item.price}</p>
                 <button
                   onClick={() => addToOrder(item)}
-                  className="text-lg"
+                  className="absolute bottom-5 right-5 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
                 >
                   ➕
                 </button>
               </div>
+              <div className="text-black font-bold text-start mt-2">
+                <p>{item.name}</p>
+                <p>฿{item.price}</p>
+              </div>
+            </div>
             ))}
           </div>
         </section>
+        </div>
+        
 
         {/* Menu */}
-        <section id="menu" className="mt-8">
-          <h3 className="text-md font-bold mb-2 text-black">Menu</h3>
+        <div id='menu'> </div>
+        <div className='mt-6 border border-black p-2 rounded-sm bg-white'>
+          <section className="mt-8">
+          <h3 className="text-2xl font-bold mb-2 text-black">Menu</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {menu.map((item, i) => (
-              <div key={i} className="text-center bg-white p-2 rounded shadow">
-                <Image
+              <div key={i} className="relative text-center bg-white p-2 rounded">
+                <div className='relative w-fit mx-auto p-2'>
+                 <Image
                   src={item.image}
                   alt={item.name}
                   width={100}
                   height={100}
-                  className="mx-auto rounded"
+                  className="rounded border border-black w-52"
                 />
-                <p>{item.name}</p>
-                <p>฿{item.price}</p>
                 <button
                   onClick={() => addToOrder(item)}
-                  className="text-lg"
-                >
+                  className="absolute bottom-5 right-5 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
+                  >
                   ➕
-                </button>
+                </button> 
+                </div>
+                
+                <div className='text-black font-bold text-start'>
+                <p>{item.name}</p>
+                <p>฿{item.price}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
+        </div>
+        
 
         {/* Order Summary */}
         <section id="order" className="mt-8 bg-white p-4 rounded shadow">
           <h3 className="text-md font-bold mb-2 text-black">Order Summary</h3>
           {order.length === 0 ? (
-            <p className="text-gray-500">ยังไม่มีรายการสั่งซื้อ</p>
+            <p className="text-black">ยังไม่มีรายการสั่งซื้อ</p>
           ) : (
             <ul>
               {order.map((item, i) => (
-                <li key={i} className="flex justify-between border-b py-1">
+                <li key={i} className="flex justify-between border-b text-black py-1">
                   <span>{item.name}</span>
                   <span>฿{item.price}</span>
                 </li>
               ))}
             </ul>
           )}
-          <p className="mt-2 font-semibold text-right">Total: ฿{totalPrice}</p>
+          <p className="mt-2 font-semibold text-right text-black">Total: ฿{totalPrice}</p>
         </section>
 
       </div>
