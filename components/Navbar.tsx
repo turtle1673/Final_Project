@@ -10,8 +10,6 @@ export default function Navbar() {
         <Link href={"/alldrinks"}>เครื่องดื่มทั้งหมด</Link>
         <Link href={'/sign-in'} className='bg-amber-300 p-1 rounded-md'>พนักงาน</Link>
         <Link href={'/sign-up'} className='bg-amber-300 p-1 rounded-md'>ผู้จัดการ</Link>
-        <Link href={'/staff/orders_list'} className='bg-amber-300 p-1 rounded-md'>order list</Link>
-        <Link href={'/staff/inventory'} className='bg-amber-300 p-1 rounded-md'>inventory</Link>
       </div>
     </div>
   )
