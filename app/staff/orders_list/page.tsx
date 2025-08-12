@@ -65,7 +65,7 @@ export default function StaffOrders() {
   };
 
   return (
-    <div className="flex h-screen text-gray-500">
+    <div className="w-900 flex h-screen bg-gray-100">
       <OrderList orders={orders} onSelectOrder={setSelectedOrder} />
       <OrderDetails order={selectedOrder} onUpdateStatus={handleUpdateStatus} />
     </div>
