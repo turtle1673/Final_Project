@@ -34,13 +34,6 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
     return matchesCategory && matchesSearch;
   });
 
-  const getStockStatusColor = (stock: Stock) => {
-    if (stock.status === 'INACTIVE') return 'bg-gray-500';
-    if (stock.quantity === 0) return 'bg-red-500';
-    if (stock.quantity <= 10) return 'bg-yellow-500';
-    return 'bg-green-500';
-  };
-
   const getStockStatusText = (stock: Stock) => {
     if (stock.status === 'INACTIVE') return 'Inactive';
     if (stock.quantity === 0) return 'Out of Stock';
@@ -101,50 +94,63 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
             <div
               key={stock.id}
               onClick={() => onSelectStock(stock)}
-              className="bg-white border rounded-lg p-4 hover:shadow-md cursor-pointer transition-shadow"
+              className="group bg-card border border-border rounded-xl p-4 hover:border-primary/30 cursor-pointer transition-all duration-200 hover:shadow-sm relative"
             >
               <div className="relative">
-                <div className="bg-gradient-to-br from-blue-100 to-purple-200 rounded-lg p-4 aspect-square flex items-center justify-center mb-3">
-                  <div className="text-center">
-                    <div className="text-3xl mb-1">
-                      {stock.category.toLowerCase().includes('drink') ? '🥤' : 
-                       stock.category.toLowerCase().includes('topping') ? '🧋' : 
+                <div className="bg-gradient-to-br rounded-xl p-4 aspect-square flex items-center justify-center mb-3">
+                  <div className="text-center space-y-1">
+                    <div className="text-4xl mb-2 transform group-hover:scale-110 transition-transform text-gray-500">
+                      {stock.category.toLowerCase().includes('drink') ? '🥤' :
+                       stock.category.toLowerCase().includes('topping') ? '🧋' :
                        '📦'}
                     </div>
-                    <p className="text-xs text-gray-600">{stock.category}</p>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                      {stock.category}
+                    </p>
                   </div>
                 </div>
                 
                 {/* Stock Status Indicator */}
-                <div className={`absolute -top-2 -right-2 w-4 h-4 rounded-full ${getStockStatusColor(stock)}`}></div>
-              </div>
-              
-              <h4 className="font-medium text-gray-900 mb-1">{stock.name}</h4>
-              <p className="text-sm text-gray-600 mb-2">
-                Quantity: {stock.quantity}
-              </p>
-              
-              <div className="flex justify-between items-center">
-                <span className={`text-xs px-2 py-1 rounded-full ${
+                <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
                   stock.status === 'INACTIVE'
-                    ? 'bg-gray-100 text-gray-800'
+                    ? 'bg-muted text-muted-foreground'
                     : stock.quantity === 0
-                    ? 'bg-red-100 text-red-800'
+                    ? 'bg-destructive/20 text-destructive'
                     : stock.quantity <= 10
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-green-100 text-green-800'
+                    ? 'bg-warning/20 text-warning'
+                    : 'bg-success/20 text-success'
                 }`}>
                   {getStockStatusText(stock)}
-                </span>
+                </div>
+              </div>
+              
+              <h4 className="font-semibold text-foreground mb-1 truncate">{stock.name}</h4>
+              
+              <div className="flex justify-between items-center mt-3">
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-medium text-foreground text-lg mr-1">
+                      {stock.quantity}
+                    </span>
+                    units available
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Last updated: {new Date(stock.updatedAt).toLocaleDateString()}
+                  </p>
+                </div>
                 
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onSelectStock(stock);
                   }}
-                  className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm font-medium flex items-center gap-1.5"
                 >
-                  Edit
+                  <span>Manage</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-up-right">
+                    <path d="M7 7h10v10" />
+                    <path d="M7 17 17 7" />
+                  </svg>
                 </button>
               </div>
             </div>
