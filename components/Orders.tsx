@@ -53,7 +53,7 @@ export default function OrderList({ orders, onSelectOrder }: OrderListProps) {
   };
 
   return (
-    <div className="w-160 bg-white border-r border-gray-200 flex flex-col h-full">
+    <div className="w-160 bg-white border-r border-gray-200 flex flex-col h-full ml-10">
       {/* Header */}
       <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="flex items-center gap-3 mb-4">

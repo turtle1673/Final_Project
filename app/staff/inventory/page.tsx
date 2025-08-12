@@ -59,7 +59,7 @@ export default function StaffStorage() {
   };
 
  return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen bg-gray-100 text-gray-600 ml-10">
       {selectedStock ? (
         <StorageDetails
           stock={selectedStock}
