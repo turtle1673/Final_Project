@@ -136,19 +136,19 @@ export default function OrderList({ orders, onSelectOrder }: OrderListProps) {
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="flex items-center gap-1">
                     <span className="text-gray-500">🌡️</span>
-                    <span className="font-medium">{order.type}</span>
+                    <span className="font-medium text-gray-500">{order.type}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-gray-500">📏</span>
-                    <span className="font-medium">{order.cupsize}</span>
+                    <span className="font-medium text-gray-500">{order.cupsize}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-gray-500">🍯</span>
-                    <span className="font-medium">{order.sweetness}</span>
+                    <span className="font-medium text-gray-500">{order.sweetness}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-gray-500">🧋</span>
-                    <span className="font-medium">{order.topping || 'None'}</span>
+                    <span className="font-medium text-gray-500">{order.topping || 'None'}</span>
                   </div>
                 </div>
               </div>
