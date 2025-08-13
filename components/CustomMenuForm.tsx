@@ -8,7 +8,7 @@ export default function CustomMenu() {
 
   const [sweetness, setSweetness] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
-  const [topping, setTopping] = useState<string[]>([]); // ✅ เปลี่ยนเป็น array
+  const [topping, setTopping] = useState<string[]>([]); 
   const [plasticglass, setPlasticglass] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
