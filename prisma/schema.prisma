@@ -16,7 +16,7 @@ datasource db {
 }
 
 enum userRole {
-  USER
+  CUSTOMER
   EMPLOYEE
   MANAGER
 }
@@ -47,84 +47,27 @@ enum sweetness {
   MORE_SUGAR
 }
 
-// Models
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String
-  role      userRole  @default(USER)
-  createdAt DateTime @default(now())
-  
-  employeeOrders Order[]
+  id       Int      @id @default(autoincrement())
+  userName String?
+  userEmail     String   @unique
+  userPassword  String
+  role      userRole @default(CUSTOMER)
 
-  itemUpdated UpdateStock[]
-}
-
-model StockItem {
-  id        Int      @id @default(autoincrement())
-  name      String
-  quantity  Int
-  recQuantity Int
-  unit      String
-  imgUrl   String?
-  category  String
-
-  updatedBy UpdateStock[]
-  ingredient Ingredient[]
 }
 
 model Drink {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Float
-  imgUrl   String
-
-  OrderItem OrderItem[]
-  Ingredient Ingredient[]
+  id          Int        @id @default(autoincrement())
+  name        String
+  price       Float
 }
 
-model Order {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  employee User @relation(fields: [employeeId], references: [id])
-  employeeId Int
-
-  orderItems OrderItem[]
+model Stock {
+  id          Int        @id @default(autoincrement())
+  name     String
+  quantity    Int
+  unit     String
+  addonPrice Float?
 }
 
 //relationships
-model OrderItem {
-  @@id([drinkId, orderId])
-
-  drink Drink @relation(fields: [drinkId], references: [id])
-  drinkId Int
-  order Order @relation(fields: [orderId], references: [id])
-  orderId Int
-  drinkType drinkType @default(COLD)
-  quantity Int
-  totalPrice Float
-  addon Boolean @default(false)
-  cupSize cupSize @default(MEDIUM)
-  sweetness sweetness @default(NORMAL_SUGAR)
-  statusOrder statusOrder @default(PENDING)
-}
-
-model UpdateStock {
-  @@id([stockItemId, employeeId])
-
-  stockItem StockItem @relation(fields: [stockItemId], references: [id])
-  stockItemId Int
-  employee User @relation(fields: [employeeId], references: [id])
-  employeeId Int
-  updateAt DateTime @default(now())
-}
-
-model Ingredient {
-  @@id([drinkId, stockItemId])
-  drink Drink @relation(fields: [drinkId], references: [id])
-  drinkId Int
-  stockItem StockItem @relation(fields: [stockItemId], references: [id])
-  stockItemId Int
-  amount Int
-}
