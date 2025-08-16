@@ -8,7 +8,7 @@ export default function CustomMenu() {
 
   const [sweetness, setSweetness] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
-  const [topping, setTopping] = useState<string[]>([]); 
+  const [topping, setTopping] = useState<string | null>(null); 
   const [plasticglass, setPlasticglass] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -37,19 +37,18 @@ export default function CustomMenu() {
     { label: "L", value: "L", price: 0 },
   ];
 
+  const isReadyToAdd = sweetness && type && plasticglass;
+
   // คำนวณราคา
   const toppingExtra =
-    topping.reduce((sum, t) => {
-      const opt = toppingOptions.find((o) => o.value === t);
-      return sum + (opt?.price || 0);
-    }, 0) * quantity;
+    (toppingOptions.find((o) => o.value === topping)?.price || 0) * quantity;
 
   const typeExtra =
     (typeOptions.find((t) => t.value === type)?.price || 0) * quantity;
 
   const totalPrice = basePrice * quantity + toppingExtra + typeExtra;
 
-  // Component สำหรับ radio
+  // Component radio
   const CustomRadio = ({
     selected,
     onClick,
@@ -63,15 +62,12 @@ export default function CustomMenu() {
   }) => (
     <div
       onClick={onClick}
-      className={`flex w-100  items-center justify-between p-2 border rounded-md cursor-pointer ${
-        selected
-          ? "border-green-500 bg-green-50"
-          : "border-gray-300 bg-white"
+      className={`flex w-full items-center justify-between p-2 border rounded-md cursor-pointer min-h-[50px] ${
+        selected ? "border-green-500 bg-green-50" : "border-gray-300 bg-white"
       }`}
     >
       <span>
-        {label}{" "}
-        {subLabel && <span className="text-sm text-gray-500">{subLabel}</span>}
+        {label} {subLabel && <span className="text-sm text-gray-500">{subLabel}</span>}
       </span>
       <div
         className={`w-5 h-5 rounded border flex items-center justify-center ${
@@ -83,7 +79,7 @@ export default function CustomMenu() {
     </div>
   );
 
-  // Component สำหรับ checkbox
+  // Component checkbox (radio-like เพราะเลือกได้ทีละ 1)
   const CustomCheckbox = ({
     checked,
     onClick,
@@ -97,15 +93,12 @@ export default function CustomMenu() {
   }) => (
     <div
       onClick={onClick}
-      className={`flex items-center justify-between p-2 border rounded-md cursor-pointer ${
-        checked
-          ? "border-green-500 bg-green-50"
-          : "border-gray-300 bg-white"
+      className={`flex w-full items-center justify-between p-2 border rounded-md cursor-pointer min-h-[50px] ${
+        checked ? "border-green-500 bg-green-50" : "border-gray-300 bg-white"
       }`}
     >
       <span>
-        {label}{" "}
-        {subLabel && <span className="text-sm text-gray-500">{subLabel}</span>}
+        {label} {subLabel && <span className="text-sm text-gray-500">{subLabel}</span>}
       </span>
       <div
         className={`w-5 h-5 rounded border flex items-center justify-center ${
@@ -118,7 +111,7 @@ export default function CustomMenu() {
   );
 
   return (
-    <div className="max-w-md mx-auto bg-[#f9f7f4] rounded-lg shadow p-4 h-full mt-3">
+    <div className="max-w-md mx-auto bg-[#f9f7f4] rounded-lg shadow p-4 h-full mt-3 w-100">
       {/* รูปสินค้า */}
       <div className="relative w-full h-60">
         <Image
@@ -136,89 +129,121 @@ export default function CustomMenu() {
       </div>
       <p className="text-gray-500">ราคาขั้นต้น</p>
 
+      {/* ตัวเลือก */}
       <div className="max-w-md mx-auto bg-[#f9f7f4] rounded-lg shadow flex flex-col max-h-[50vh]">
         <div className="flex-1 overflow-y-auto p-4">
-      {/* ความหวาน */}
-      <div className="mt-4">
-        <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
-          <span>ระดับความหวาน</span>
-          <span className="text-sm text-green-600">เลือก 1</span>
-        </div>
-        <div className="space-y-2 mt-2 text-black">
-          {sweetnessOptions.map((opt) => (
-            <CustomRadio
-              key={opt.value}
-              selected={sweetness === opt.value}
-              onClick={() => setSweetness(opt.value)}
-              label={`${opt.label} ${opt.value}`}
-            />
-          ))}
-        </div>
-      </div>
 
-      {/* ชนิด */}
-      <div className="mt-4">
-        <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
-          <span>ชนิด</span>
-          <span className="text-sm text-green-600">เลือก 1</span>
-        </div>
-        <div className="space-y-2 mt-2 text-black">
-          {typeOptions.map((opt) => (
-            <CustomRadio
-              key={opt.value}
-              selected={type === opt.value}
-              onClick={() => setType(opt.value)}
-              label={opt.label}
-              subLabel={opt.price > 0 ? `+${opt.price}` : ""}
-            />
-          ))}
-        </div>
-      </div>
+          {/* ความหวาน */}
+          <div className="mt-4">
+            <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
+              <span>ระดับความหวาน</span>
+              <span
+                className={`text-sm px-3 py-1 rounded-2xl ${
+                  sweetness
+                    ? "bg-green-100 text-green-600"
+                    : "bg-[#F4E7E1] text-[#b5654a]"
+                }`}
+              >
+                เลือก 1
+              </span>
+            </div>
+            <div className="space-y-2 mt-2 text-black">
+              {sweetnessOptions.map((opt) => (
+                <CustomRadio
+                  key={opt.value}
+                  selected={sweetness === opt.value}
+                  onClick={() => setSweetness(opt.value)}
+                  label={`${opt.label} ${opt.value}`}
+                />
+              ))}
+            </div>
+          </div>
 
-      {/* ทอปปิ้ง (เลือกได้หลายตัว) */}
-      <div className="mt-4">
-        <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
-          <span>ทอปปิ้ง</span>
-          <span className="text-sm text-green-600">เลือกได้</span>
-        </div>
-        <div className="space-y-2 mt-2 text-black">
-          {toppingOptions.map((opt) => (
-            <CustomCheckbox
-              key={opt.value}
-              checked={topping.includes(opt.value)}
-              onClick={() => {
-                if (topping.includes(opt.value)) {
-                  setTopping(topping.filter((t) => t !== opt.value));
-                } else {
-                  setTopping([...topping, opt.value]);
-                }
-              }}
-              label={opt.label}
-              subLabel={opt.price > 0 ? `+${opt.price}` : ""}
-            />
-          ))}
-        </div>
-      </div>
+          {/* ชนิด */}
+          <div className="mt-4">
+            <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
+              <span>ชนิด</span>
+              <span
+                className={`text-sm px-3 py-1 rounded-2xl ${
+                  type
+                    ? "bg-green-100 text-green-600"
+                    : "bg-[#F4E7E1] text-[#b5654a]"
+                }`}
+              >
+                เลือก 1
+              </span>
+            </div>
+            <div className="space-y-2 mt-2 text-black">
+              {typeOptions.map((opt) => (
+                <CustomRadio
+                  key={opt.value}
+                  selected={type === opt.value}
+                  onClick={() => setType(opt.value)}
+                  label={opt.label}
+                  subLabel={opt.price > 0 ? `+${opt.price}` : ""}
+                />
+              ))}
+            </div>
+          </div>
 
-      {/* ขนาดแก้ว */}
-      <div className="mt-4">
-        <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
-          <span>ขนาดแก้ว</span>
-          <span className="text-sm text-green-600 ">เลือก 1</span>
+          {/* ทอปปิ้ง */}
+          <div className="mt-4">
+            <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
+              <span>ทอปปิ้ง</span>
+              <span
+                className={`text-sm px-3 py-1 rounded-2xl ${
+                  topping
+                    ? "bg-green-100 text-green-600"
+                    : "bg-[#F4E7E1] text-[#b5654a]"
+                }`}
+              >
+                {topping ? "เลือกแล้ว" : "เลือกได้"}
+              </span>
+            </div>
+            <div className="space-y-2 mt-2 text-black">
+              {toppingOptions.map((opt) => (
+                <CustomCheckbox
+                  key={opt.value}
+                  checked={topping === opt.value}
+                  onClick={() => {
+                    if (topping === opt.value) setTopping(null);
+                    else setTopping(opt.value);
+                  }}
+                  label={opt.label}
+                  subLabel={opt.price > 0 ? `+${opt.price}` : ""}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* ขนาดแก้ว */}
+          <div className="mt-4">
+            <div className="flex justify-between items-center font-bold border-b pb-1 text-black">
+              <span>ขนาดแก้ว</span>
+              <span
+                className={`text-sm px-3 py-1 rounded-2xl ${
+                  plasticglass
+                    ? "bg-green-100 text-green-600"
+                    : "bg-[#F4E7E1] text-[#b5654a]"
+                }`}
+              >
+                เลือก 1
+              </span>
+            </div>
+            <div className="space-y-2 mt-2 text-black">
+              {plasticglassOptions.map((opt) => (
+                <CustomRadio
+                  key={opt.value}
+                  selected={plasticglass === opt.value}
+                  onClick={() => setPlasticglass(opt.value)}
+                  label={opt.label}
+                  subLabel={opt.price > 0 ? `+${opt.price}` : ""}
+                />
+              ))}
+            </div>
+          </div>
+
         </div>
-        <div className="space-y-2 mt-2 text-black">
-          {plasticglassOptions.map((opt) => (
-            <CustomRadio
-              key={opt.value}
-              selected={plasticglass === opt.value}
-              onClick={() => setPlasticglass(opt.value)}
-              label={opt.label}
-              subLabel={opt.price > 0 ? `+${opt.price}` : ""}
-            />
-          ))}
-        </div>
-      </div>
-      </div>
       </div>
 
       {/* จำนวน & ปุ่มเพิ่มตะกร้า */}
@@ -238,8 +263,15 @@ export default function CustomMenu() {
             +
           </button>
         </div>
-        <button className="flex-1 ml-4 py-2 rounded-lg bg-green-500 text-white font-bold">
-          เพิ่มไปยังตะกร้า - {totalPrice}
+        <button
+          disabled={!isReadyToAdd}
+          className={`flex-1 ml-4 py-2 rounded-lg font-bold transition-colors ${
+            isReadyToAdd
+              ? "bg-green-500 text-white"
+              : "bg-[#F4E7E1] text-[#b5654a] cursor-not-allowed"
+          }`}
+        >
+          เพิ่มไปยังตะกร้า - {totalPrice}฿
         </button>
       </div>
     </div>

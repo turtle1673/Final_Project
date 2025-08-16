@@ -14,14 +14,14 @@ export default function Navbar() {
       
       <button
         onClick={toggleMenu}
-        className="m-2 focus:outline-none fixed top-2 left-2 rounded z-[9999]"
+        className="m-2 focus:outline-none fixed top-[-2] left-2 rounded z-[9999]"
         aria-label="Toggle menu"
       >
         <Image
-          src={isOpen ? '/icons/smoothies.png' : '/icons/smoothies.png'}
+          src={isOpen ? '/IMAGES/smoothielogo.png' : '/IMAGES/smoothielogo.png'}
           alt={isOpen ? '' : ''}
-          width={24}
-          height={24}
+          width={30}
+          height={30}
           priority={true}
         />
       </button>

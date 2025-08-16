@@ -32,7 +32,7 @@ function Navbar() {
         <div className="absolute right-4 mt-2 bg-white text-black rounded-md shadow-lg w-48 p-4">
           <h3 className="font-bold mb-2">Smoothies</h3>
           <ul className="list-disc list-inside space-y-1 text-sm">
-            <li><Link href={"/myorder"} className='"hover:underline' >My Order</Link></li>
+            <li><Link href={"/myorder"} className="hover:underline">My Order</Link></li>
             <li><a href="#special" className="hover:underline">Today's Special</a></li>
             <li><a href="#menu" className="hover:underline">Menu</a></li>
             <li><a href="#feedback" className="hover:underline">Feedback</a></li>
@@ -45,7 +45,7 @@ function Navbar() {
 
 // Data for drinks
 const todaySpecial = [
-  { name: 'นมสด', price: 45, image: '/drinks/imi.jpg' },
+  { name: 'นมสด', price: 45, image: '/IMAGES/นมสด.jpg' },
   { name: 'ชาไทย', price: 45, image: '/drinks/thaitea.jpg' },
   { name: 'ชาเขียว', price: 45, image: '/drinks/greentea.jpg' },
   { name: 'ไมโล', price: 55, image: '/drinks/milo.jpg' },
@@ -77,11 +77,38 @@ function CustomerPage() {
 
   const totalPrice = order.reduce((sum, item) => sum + item.price, 0)
 
+  // Grid rendering function to avoid repetition
+  const renderDrinkGrid = (items: any[]) => (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {items.map((item, i) => (
+        <div key={i} className="relative text-center bg-white rounded flex flex-col overflow-hidden border border-black">
+          <div className="relative w-full">
+            <Image
+              src={item.image}
+              alt={item.name}
+              width={100}
+              height={100}
+              className="w-full h-40 object-cover"
+            />
+            <button
+              onClick={() => addToOrder(item)}
+              className="absolute bottom-2 right-2 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
+            >
+              ➕
+            </button>
+          </div>
+          <div className="text-black font-bold p-2 text-start">
+            <p>{item.name}</p>
+            <p>฿{item.price}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <div className="pt-20 min-h-screen flex justify-center items-start bg-[#F6EEE0] px-4 pb-8 w-full">
-      
       <div className="w-full max-w-screen-lg">
-        <div id='special'></div>
         {/* Table Number */}
         <h2 className="text-2xl font-semibold mt-4 text-black">
           Table number:{' '}
@@ -93,72 +120,16 @@ function CustomerPage() {
         </h2>
 
         {/* Today’s Special */}
-        <div className='mt-6 border border-black p-2 rounded-sm bg-white'>
-          <section className="mt-6">
+        <div id='special' className='mt-6 border border-black p-2 rounded-sm bg-white'>
           <h3 className="text-2xl font-bold mb-2 text-black">Today's Special</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {todaySpecial.map((item, i) => (
-              <div key={i} className="relative text-center bg-white p-2 rounded">
-              <div className="relative w-fit mx-auto p-2"> {/* เพิ่ม padding */}
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className="rounded border border-black w-52" // ลดจาก w-60 → w-52
-                />
-                <button
-                  onClick={() => addToOrder(item)}
-                  className="absolute bottom-5 right-5 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
-                >
-                  ➕
-                </button>
-              </div>
-              <div className="text-black font-bold text-start mt-2">
-                <p>{item.name}</p>
-                <p>฿{item.price}</p>
-              </div>
-            </div>
-            ))}
-          </div>
-        </section>
+          {renderDrinkGrid(todaySpecial)}
         </div>
-        
 
         {/* Menu */}
-        <div id='menu'> </div>
-        <div className='mt-6 border border-black p-2 rounded-sm bg-white'>
-          <section className="mt-8">
+        <div id='menu' className='mt-6 border border-black p-2 rounded-sm bg-white'>
           <h3 className="text-2xl font-bold mb-2 text-black">Menu</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {menu.map((item, i) => (
-              <div key={i} className="relative text-center bg-white p-2 rounded">
-                <div className='relative w-fit mx-auto p-2'>
-                 <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className="rounded border border-black w-52"
-                />
-                <button
-                  onClick={() => addToOrder(item)}
-                  className="absolute bottom-5 right-5 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
-                  >
-                  ➕
-                </button> 
-                </div>
-                
-                <div className='text-black font-bold text-start'>
-                <p>{item.name}</p>
-                <p>฿{item.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+          {renderDrinkGrid(menu)}
         </div>
-        
 
         {/* Order Summary */}
         <section id="order" className="mt-8 bg-white p-4 rounded shadow">
@@ -177,7 +148,6 @@ function CustomerPage() {
           )}
           <p className="mt-2 font-semibold text-right text-black">Total: ฿{totalPrice}</p>
         </section>
-
       </div>
     </div>
   )
