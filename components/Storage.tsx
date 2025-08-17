@@ -49,11 +49,11 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex flex-col lg:flex-row h-full">
       {/* Category Sidebar */}
-      <div className="w-64 bg-white border-r p-4">
+      <div className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r p-4">
         <h3 className="font-medium text-gray-800 mb-4">Categories</h3>
-        <div className="space-y-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2 lg:space-y-2">
           {categories.map(category => (
             <button
               key={category.name}
@@ -65,8 +65,8 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
               }`}
             >
               <div className="flex justify-between">
-                <span className="capitalize">{category.name === 'all' ? 'All Items' : category.name}</span>
-                <span className="text-sm text-gray-500">{category.count}</span>
+                <span className="capitalize text-sm">{category.name === 'all' ? 'All Items' : category.name}</span>
+                <span className="text-xs text-gray-500">{category.count}</span>
               </div>
             </button>
           ))}
@@ -74,9 +74,9 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
       </div>
       
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 lg:p-6">
         {/* Search and Filter Bar */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
             <input
               type="text"
@@ -89,14 +89,14 @@ export default function Storage({ stocks, onSelectStock }: StorageProps) {
           
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2"
           >
             Filters
           </button>
         </div>
         
         {/* Stock Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredStocks.map(stock => (
             <div
               key={stock.id}

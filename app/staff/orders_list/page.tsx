@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import OrderList from '../../../components/Orders';
 import OrderDetails from '../../../components/OrderDetails';
 import { Order } from '../../../types';
@@ -65,9 +65,11 @@ export default function StaffOrders() {
   };
 
   return (
-    <div className="w-800 flex h-screen bg-gray-100 text-gray-600">
-      <OrderList orders={orders} onSelectOrder={setSelectedOrder} />
-      <OrderDetails order={selectedOrder} onUpdateStatus={handleUpdateStatus} />
+    <div className="min-h-screen bg-gray-100 text-gray-600">
+      <div className="flex flex-col lg:flex-row h-full">
+        <OrderList orders={orders} onSelectOrder={setSelectedOrder} />
+        <OrderDetails order={selectedOrder} onUpdateStatus={handleUpdateStatus} />
+      </div>
     </div>
   );
 }
