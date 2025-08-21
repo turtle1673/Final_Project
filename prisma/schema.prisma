@@ -48,78 +48,87 @@ enum sweetness {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  userName String?
-  userEmail     String   @unique
-  userPassword  String
+  id  String @id @default(cuid())
+  name String?
+  email     String   @unique
+  password  String
   role      userRole @default(CUSTOMER)
 
-  orders   Order[]
-  restocks Restock[]
+  supply StockItem[]
+  closeOrders Drink[]
+
+  // orders   Order[]
+  // restocks Restock[]
 }
 
 model Drink {
   id         Int        @id @default(autoincrement())
-  drinkName        String
-  drinkPrice       Float
+  name        String
+  price       Float
   mainIngredient String
-  drinkImg String?
+  img String?
 
-  orders Order[]
-  ingredients Ingredient[]
+  ingredients StockItem[]
+  closeBy User[]
+
+  // orders Order[]
+  // ingredients Ingredient[]
 }
 
 model StockItem {
   id          Int        @id @default(autoincrement())
-  itemName     String
+  name     String
   currentQuantity    Int
   stockUnit     String
   category String
-  lowThreshold Int
-  nearlyEmpty Int
+  lowThreshold Int?
+  nearlyEmpty Int?
   lastUpdated DateTime @default(now())
 
-  useIn Ingredient[]
-  restock Restock[]
+  useIn Drink[]
+  supplyBy User[]
+
+  // useIn Ingredient[]
+  // restock Restock[]
 }
 
 //relationships
-model Order {
-  addons        Boolean
-  drinkType     drinkType @default(COLD)
-  sweetLevel sweetness @default(NORMAL_SUGAR)
-  cupSize       cupSize @default(MEDIUM)
-  orderStatus statusOrder @default(PENDING)
-  orderDate DateTime @default(now())
+// model Order {
+//   addons        Boolean
+//   drinkType     drinkType @default(COLD)
+//   sweetLevel sweetness @default(NORMAL_SUGAR)
+//   cupSize       cupSize @default(MEDIUM)
+//   orderStatus statusOrder @default(PENDING)
+//   orderDate DateTime @default(now())
 
-  employee User @relation(fields: [employeeId], references: [id])
-  employeeId Int
-  drink Drink @relation(fields: [drinkId], references: [id])
-  drinkId Int
+//   employee User @relation(fields: [employeeId], references: [id])
+//   employeeId Int
+//   drink Drink @relation(fields: [drinkId], references: [id])
+//   drinkId Int
 
-  @@id([employeeId, drinkId])
-}
+//   @@id([employeeId, drinkId])
+// }
 
-model Ingredient {
-  quantity Float
+// model Ingredient {
+//   quantity Float
 
-  stockItem StockItem @relation(fields: [stockItemId], references: [id])
-  stockItemId Int
-  drink Drink @relation(fields: [drinkId], references: [id])
-  drinkId Int
+//   stockItem StockItem @relation(fields: [stockItemId], references: [id])
+//   stockItemId Int
+//   drink Drink @relation(fields: [drinkId], references: [id])
+//   drinkId Int
 
-  @@id([stockItemId, drinkId])
-}
+//   @@id([stockItemId, drinkId])
+// }
 
-model Restock {
-  restockDate DateTime @default(now())
-  oldQuantity Int
-  newQuantity Int
+// model Restock {
+//   restockDate DateTime @default(now())
+//   oldQuantity Int
+//   newQuantity Int
 
-  stockItem StockItem @relation(fields: [stockItemId], references: [id])
-  stockItemId Int
-  employee User @relation(fields: [employeeId], references: [id])
-  employeeId Int
+//   stockItem StockItem @relation(fields: [stockItemId], references: [id])
+//   stockItemId Int
+//   employee User @relation(fields: [employeeId], references: [id])
+//   employeeId Int
 
-  @@id([stockItemId, employeeId])
-}
+//   @@id([stockItemId, employeeId])
+// }
