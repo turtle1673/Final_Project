@@ -56,6 +56,18 @@ export default function ManagerLayout({
               );
             })}
           </div>
+          
+          {/* Back to Main Site Button */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <Link
+              href="/"
+              className="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="mr-3">🏠</span>
+              Back to Main Site
+            </Link>
+          </div>
         </nav>
       </div>
 
@@ -75,7 +87,13 @@ export default function ManagerLayout({
               <span className="text-sm text-gray-600">Manager</span>
               <Link
                 href="/"
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-sm text-blue-600 hover:text-blue-800 px-3 py-1 rounded-md border border-blue-200 hover:bg-blue-50"
+              >
+                🏠 Main Site
+              </Link>
+              <Link
+                href="/"
+                className="text-sm text-red-600 hover:text-red-800"
               >
                 Logout
               </Link>
