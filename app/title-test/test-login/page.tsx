@@ -10,17 +10,16 @@ export default function SignInPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const result = await signIn("credentials", {
+    const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
     })
 
-    if (result?.error) {
-      alert("Login failed")
+    if (res?.ok) {
+      router.push("/title-test/test-page")
     } else {
-      alert("Login success")
-      router.push("/testpage")
+      alert("Sign in failed")
     }
   }
   return (

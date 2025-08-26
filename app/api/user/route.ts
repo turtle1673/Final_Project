@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server"
 import { authOptions } from "../auth/[...nextauth]/route";
-import { error } from "console";
 
 export async function GET(_req: Request) {
   const employees = await prisma.user.findMany()
@@ -15,6 +14,7 @@ export async function POST(req: Request) {
   if (!session || session.user?.role !== "MANAGER") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  
   const body = await req.json()
   const { email, password } = body
 

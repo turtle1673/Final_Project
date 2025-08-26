@@ -8,8 +8,8 @@ export default function SignOutButton() {
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
-    router.push("/testlogin");
-  };
+    router.push("/title-test/test-login");
+  }
 
   return (
     <button
