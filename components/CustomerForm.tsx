@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 
+
 // Navbar Component
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -46,24 +47,10 @@ function Navbar() {
 // Data for drinks
 const todaySpecial = [
   { name: 'นมสด', price: 45, image: '/IMAGES/นมสด.jpg' },
-  { name: 'ชาไทย', price: 45, image: '/drinks/thaitea.jpg' },
-  { name: 'ชาเขียว', price: 45, image: '/drinks/greentea.jpg' },
-  { name: 'ไมโล', price: 55, image: '/drinks/milo.jpg' },
 ]
 
 const menu = [
   { name: 'นมเย็น', price: 45, image: '/drinks/icedmilk.jpg' },
-  { name: 'นมปั่นโอรีโอ้', price: 45, image: '/drinks/oreo.jpg' },
-  { name: 'โกโก้', price: 45, image: '/drinks/cocoa.jpg' },
-  { name: 'กาแฟ', price: 55, image: '/drinks/coffee.jpg' },
-  { name: 'ชามะนาว', price: 45, image: '/drinks/lemontea.jpg' },
-  { name: 'ส้มปั่น', price: 45, image: '/drinks/orange.jpg' },
-  { name: 'ชาบลู', price: 45, image: '/drinks/blue.jpg' },
-  { name: 'แตงโมปั่น', price: 55, image: '/drinks/watermelon.jpg' },
-  { name: 'นมสดเย็น', price: 45, image: '/drinks/coldmilk.jpg' },
-  { name: 'ชาพีชเย็น', price: 45, image: '/drinks/peach.jpg' },
-  { name: 'ชาเย็น', price: 45, image: '/drinks/redtea.jpg' },
-  { name: 'นมคาราเมล', price: 65, image: '/drinks/caramel.jpg' },
 ]
 
 // CustomerPage Component
@@ -131,23 +118,6 @@ function CustomerPage() {
           {renderDrinkGrid(menu)}
         </div>
 
-        {/* Order Summary */}
-        <section id="order" className="mt-8 bg-white p-4 rounded shadow">
-          <h3 className="text-md font-bold mb-2 text-black">Order Summary</h3>
-          {order.length === 0 ? (
-            <p className="text-black">ยังไม่มีรายการสั่งซื้อ</p>
-          ) : (
-            <ul>
-              {order.map((item, i) => (
-                <li key={i} className="flex justify-between border-b text-black py-1">
-                  <span>{item.name}</span>
-                  <span>฿{item.price}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          <p className="mt-2 font-semibold text-right text-black">Total: ฿{totalPrice}</p>
-        </section>
       </div>
     </div>
   )
