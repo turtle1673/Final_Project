@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     domains: [
-      "zerfvnptrloomcfkmmth.supabase.co", // ✅ เพิ่ม domain ของ Supabase
+      "zerfvnptrloomcfkmmth.supabase.co",
     ],
   },
 }

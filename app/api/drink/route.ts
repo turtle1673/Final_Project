@@ -2,10 +2,12 @@ import { uploadImg } from "@/app/(actions)/uploadImage"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
+
 export async function GET(_req: Request) {
     const drinks = await prisma.drink.findMany()
     return new NextResponse(JSON.stringify(drinks), { status: 200 })
 }
+
 
 export async function POST(req: Request) {
     

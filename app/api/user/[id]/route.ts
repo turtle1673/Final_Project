@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
+
 export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
@@ -17,6 +18,7 @@ export async function GET(
   return NextResponse.json((user), { status: 200 })
 }
 
+
 export async function PATCH(req: Request,{ params }: { params: { id: string } }) {
   const id = params.id
   const body = await req.json()
@@ -26,12 +28,14 @@ export async function PATCH(req: Request,{ params }: { params: { id: string } })
       where: { id },
       data: body,
     })
-    return NextResponse.json(({message:"user updated!",user:updatedUser}), { status: 200 })
+
+    return NextResponse.json(({message:"user updated! ",user:updatedUser}), { status: 200 })
   } catch (error: any) {
     console.error("Error updating user:", error)
     return NextResponse.json(({ message: "An unexpected error occurred",Error:error}),{ status: 500 })
   }
 }
+
 
 export async function DELETE(_req: Request,{ params }: { params: { id: string } }) {
   const id = params.id
