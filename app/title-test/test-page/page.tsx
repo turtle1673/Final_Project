@@ -6,7 +6,7 @@ export default function testPage() {
   const { data: session } = useSession()
 
   if (!session) {
-    return <p className="text-center text-black">คุณคือ Guest (role: CUSTOMER)</p>
+    return <p className="text-center text-black">ยินดีต้อนรับ</p>
   }
 
   return (

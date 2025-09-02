@@ -30,7 +30,9 @@ if(loading) return <div>loading...</div>
 return (
     <>
     <h1 className="text-black">Hello</h1>
+    <div className="bg-cyan-400">
     <TitleTestDrinks drinks={drinks}/>
+    </div>
     </>
     )
 }

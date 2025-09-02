@@ -11,5 +11,5 @@ export default function TitleTestLayout({
         <TitleTestNav />
       {children}
     </div>
-  );
+  )
 }
