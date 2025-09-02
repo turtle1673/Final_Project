@@ -78,11 +78,12 @@ model Drink {
 model StockItem {
   id          Int        @id @default(autoincrement())
   name     String
-  currentQuantity    Int
-  stockUnit     String
   category String
-  lowThreshold Int?
-  nearlyEmpty Int?
+  currentQuantity    Int?
+  maxQuantity Int?
+  unit     String
+  status  String?
+  img String?
   lastUpdated DateTime @default(now())
 
   useIn Drink[]

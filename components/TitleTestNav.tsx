@@ -10,6 +10,9 @@ export default function TitleTestNav() {
       <a className="text-blue-500 underline" href="/title-test/test-login">
         Login
       </a>
+      <a className="text-blue-500 underline" href="/title-test/test-drinks">
+        Drinks
+      </a>
     </nav>
   )
 }
