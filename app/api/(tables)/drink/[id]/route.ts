@@ -7,6 +7,7 @@ export async function GET(_req:Request,context:{params : {id : string}}){
         const id = Number(context.params.id)
         const drink = await prisma.drink.findUnique({
             where : {id},
+            include : {ingredients : {include : {stockItem : true}}}
         })
 
         if(!drink) return NextResponse.json({message:"drink not found "},{status:404})

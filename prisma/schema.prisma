@@ -76,7 +76,7 @@ model StockItem {
   id          Int        @id @default(autoincrement())
   name     String
   category String
-  currentQuantity    Int?
+  currentQuantity    Int? @default(0)
   maxQuantity Int?
   unit     String
   status  String?

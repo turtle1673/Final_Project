@@ -25,7 +25,7 @@ export default function page() {
     
         fetchDrinks()
     },[])
-    if(loading) return <div>loading...</div>
+    if(loading) return <div className="text-gray-500 justify-self-center text-3xl">loading...</div>
   return (
     <>
     <TitleTestItem items={items}/>

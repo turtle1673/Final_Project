@@ -15,7 +15,7 @@ export default function page() {
             return
           }
 
-      alert("upload successful" )
+      alert("added new item to stock" )
     }catch(error:any){
       console.log("catch-----error " + error)
       alert("upload failed " + error.message)
