@@ -2,10 +2,10 @@
 
 interface Staff {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
-  role: 'USER' | 'EMPLOYEE' | 'MANAGER';
-  createdAt: Date;
+  role: 'CUSTOMER' | 'EMPLOYEE' | 'MANAGER' | 'USER';
+  createdAt: string | Date;
 }
 
 interface StaffTableProps {
@@ -15,6 +15,14 @@ interface StaffTableProps {
 }
 
 export default function StaffTable({ staff, onEdit, onDelete }: StaffTableProps) {
+  const getInitials = (displayName: string | null | undefined) => {
+    const source = (displayName || '').trim();
+    if (!source) return '?';
+    const parts = source.split(/\s+/).filter(Boolean);
+    const letters = parts.slice(0, 2).map(p => p[0]);
+    return letters.join('').toUpperCase();
+  };
+
   const getRoleBadgeColor = (role: Staff['role']) => {
     switch (role) {
       case 'MANAGER':
@@ -22,6 +30,7 @@ export default function StaffTable({ staff, onEdit, onDelete }: StaffTableProps)
       case 'EMPLOYEE':
         return 'bg-blue-100 text-blue-800';
       case 'USER':
+      case 'CUSTOMER':
         return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -35,6 +44,7 @@ export default function StaffTable({ staff, onEdit, onDelete }: StaffTableProps)
       case 'EMPLOYEE':
         return 'Employee';
       case 'USER':
+      case 'CUSTOMER':
         return 'User';
       default:
         return role;
@@ -76,12 +86,12 @@ export default function StaffTable({ staff, onEdit, onDelete }: StaffTableProps)
                       <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
                         <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
                           <span className="text-xs sm:text-sm font-medium text-white">
-                            {staffMember.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            {getInitials(staffMember.name)}
                           </span>
                         </div>
                       </div>
                       <div className="ml-2 sm:ml-4">
-                        <div className="text-sm font-medium text-gray-900">{staffMember.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{staffMember.name || 'Unnamed'}</div>
                         <div className="text-xs sm:text-sm text-gray-500">ID: {staffMember.id}</div>
                       </div>
                     </div>
@@ -94,8 +104,8 @@ export default function StaffTable({ staff, onEdit, onDelete }: StaffTableProps)
                   <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{staffMember.email}</div>
                   </td>
-                  <td className="hidden md:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {staffMember.createdAt.toLocaleDateString()}
+                  <td className="hidden md:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500" suppressHydrationWarning>
+                    {new Date(staffMember.createdAt).toISOString().slice(0, 10)}
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button

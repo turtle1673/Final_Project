@@ -1,4 +1,3 @@
-import { uploadImg } from "@/app/(actions)/uploadImage";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -9,6 +8,8 @@ export async function GET(_req: Request) {
 
 export async function POST(req: Request) {
   try{
+    // Lazy import to avoid initializing Supabase on GET requests
+    const { uploadImg } = await import("@/app/(actions)/uploadImage");
     const formData = await req.formData()
     const name = formData.get("name") as string
     const category = formData.get("category") as string

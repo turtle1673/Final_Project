@@ -5,36 +5,11 @@ import StaffForm from '../../../components/StaffForm';
 
 interface Staff {
   id: number;
-  name: string;
+  name: string | null;
   email: string;
-  role: 'USER' | 'EMPLOYEE' | 'MANAGER';
-  createdAt: Date;
+  role: 'CUSTOMER' | 'EMPLOYEE' | 'MANAGER';
+  createdAt: string | Date;
 }
-
-// Mock data
-const mockStaff: Staff[] = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'EMPLOYEE',
-    createdAt: new Date('2024-01-15')
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    role: 'MANAGER',
-    createdAt: new Date('2024-01-10')
-  },
-  {
-    id: 3,
-    name: 'Bob Johnson',
-    email: 'bob@example.com',
-    role: 'EMPLOYEE',
-    createdAt: new Date('2024-01-20')
-  }
-];
 
 export default function IDManagementPage() {
   const [staff, setStaff] = useState<Staff[]>([]);
@@ -47,9 +22,21 @@ export default function IDManagementPage() {
     const fetchStaff = async () => {
       try {
         setLoading(true);
-        // In real app, this would be: const response = await fetch('/api/user');
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-        setStaff(mockStaff);
+        const res = await fetch('/api/user');
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.message || 'Failed to fetch users');
+        }
+        const filtered: Staff[] = (data || [])
+          .filter((u: any) => u.role === 'MANAGER' || u.role === 'EMPLOYEE')
+          .map((u: any) => ({
+            id: u.id,
+            name: u.name ?? null,
+            email: u.email,
+            role: u.role,
+            createdAt: u.createdAt || new Date().toISOString(),
+          }));
+        setStaff(filtered);
         setError(null);
       } catch (err) {
         setError('Failed to load staff members');
