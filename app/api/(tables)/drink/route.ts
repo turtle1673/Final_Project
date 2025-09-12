@@ -1,10 +1,17 @@
-import { uploadImg } from "@/app/(actions)/uploadImage"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 
 export async function GET(_req: Request) {
-    const drinks = await prisma.drink.findMany()
+    const drinks = await prisma.drink.findMany({
+        include: {
+            ingredients: {
+                include: {
+                    stockItem: true,
+                },
+            },
+        },
+    })
     return new NextResponse(JSON.stringify(drinks), { status: 200 })
 }
 
@@ -26,6 +33,7 @@ export async function POST(req: Request) {
             return NextResponse.json({message:"filled all of values"},{status : 400})
         }
         
+        const { uploadImg } = await import("@/app/(actions)/uploadImage")
         const img = await uploadImg(file)
         const newDrink = await prisma.drink.create({
         data : {

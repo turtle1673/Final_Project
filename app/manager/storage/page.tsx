@@ -3,46 +3,7 @@ import { useState, useEffect } from 'react';
 import ManagerStorage from '../../../components/ManagerStorage';
 import StorageDetails from '../../../components/StorageDetails';
 import { Stock } from '../../../types';
-
-// Mock data matching your Prisma schema
-const mockStocks: Stock[] = [
-  {
-    id: 1,
-    name: 'Thai Tea Mix',
-    quantity: 50,
-    category: 'DRINK',
-    status: 'ACTIVE',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 2,
-    name: 'Tapioca Pearls',
-    quantity: 5,
-    category: 'TOPPING',
-    status: 'ACTIVE',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 3,
-    name: 'Green Tea Leaves',
-    quantity: 0,
-    category: 'DRINK',
-    status: 'ACTIVE',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 4,
-    name: 'Coconut Jelly',
-    quantity: 25,
-    category: 'TOPPING',
-    status: 'INACTIVE',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
+import { Iitem } from '../../../types/item';
 
 export default function ManagerStoragePage() {
   const [stocks, setStocks] = useState<Stock[]>([]);
@@ -52,13 +13,72 @@ export default function ManagerStoragePage() {
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
   useEffect(() => {
-    // Simulate API call
     const fetchStocks = async () => {
       try {
         setLoading(true);
-        // In real app, this would be: const response = await fetch('/api/stock');
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-        setStocks(mockStocks);
+        const [stockRes, drinkRes] = await Promise.all([
+          fetch('/api/stockItem'),
+          fetch('/api/drink')
+        ]);
+
+        const [stockData, drinkData] = await Promise.all([
+          stockRes.json(),
+          drinkRes.json()
+        ]);
+
+        if (!stockRes.ok) {
+          throw new Error(stockData?.message || 'Failed to fetch stock items');
+        }
+        if (!drinkRes.ok) {
+          throw new Error(drinkData?.message || 'Failed to fetch drinks');
+        }
+
+        // Map API StockItem -> UI Stock
+        const mappedStocks: Stock[] = ((stockData || []) as Iitem[]).map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.currentQuantity ?? 0,
+          category: item.category,
+          status: item.status === 'INACTIVE' ? 'INACTIVE' : 'ACTIVE',
+          createdAt: item.lastUpdated ? new Date(item.lastUpdated) : new Date(),
+          updatedAt: item.lastUpdated ? new Date(item.lastUpdated) : new Date()
+        }));
+
+        // Map Drinks -> UI Stock-like entries with computed availability
+        type DrinkApi = {
+          id: number;
+          name: string;
+          createdAt?: string | Date;
+          updatedAt?: string | Date;
+          ingredients?: Array<{
+            quantity: number;
+            stockItem: { currentQuantity: number | null };
+          }>;
+        };
+
+        const computePossibleCups = (ingredients?: DrinkApi['ingredients']): number => {
+          if (!ingredients || ingredients.length === 0) return 0;
+          let minCups = Infinity;
+          for (const ing of ingredients) {
+            const available = ing.stockItem.currentQuantity ?? 0;
+            if (ing.quantity <= 0) continue;
+            const possible = Math.floor(available / ing.quantity);
+            if (possible < minCups) minCups = possible;
+          }
+          return Number.isFinite(minCups) ? minCups : 0;
+        };
+
+        const mappedDrinks: Stock[] = ((drinkData || []) as DrinkApi[]).map((drink) => ({
+          id: -Number(drink.id || 0) || 0,
+          name: String(drink.name || ''),
+          quantity: computePossibleCups(drink.ingredients),
+          category: 'DRINK',
+          status: 'ACTIVE',
+          createdAt: drink.createdAt ? new Date(drink.createdAt) : new Date(),
+          updatedAt: drink.updatedAt ? new Date(drink.updatedAt) : new Date()
+        }));
+
+        setStocks([...mappedStocks, ...mappedDrinks]);
         setError(null);
       } catch (err) {
         setError('Failed to load stock items');

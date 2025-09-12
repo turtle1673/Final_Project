@@ -235,8 +235,8 @@ export default function ManagerStorage({
                         {getStockStatusText(stock)}
                       </span>
                     </td>
-                    <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {stock.updatedAt.toLocaleDateString()}
+                    <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500" suppressHydrationWarning>
+                      {new Date(stock.updatedAt).toISOString().slice(0, 10)}
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
