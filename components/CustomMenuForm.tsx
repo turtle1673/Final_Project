@@ -162,7 +162,7 @@ export default function CustomMenu() {
       <div className="pt-20 max-w-md mx-auto bg-[#f9f7f4] rounded-lg shadow p-4 w-100 text-black">
         {/* รูปสินค้า */}
         <div className="relative w-full h-56">
-          <Image src={image} alt={name} fill className="object-cover rounded-lg" />
+          <img src={image} alt={name} className="w-full h-full object-cover rounded-lg" />
         </div>
 
         {/* ชื่อและราคา */}

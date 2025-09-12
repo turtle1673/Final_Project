@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useOrder } from "@/app/context/Ordercontext";
+import { IDrink } from "@/types/drink"
 
 // ---------------- Navbar ----------------
 function Navbar() {
@@ -34,7 +34,7 @@ function Navbar() {
             </li>
             <li>
               <a href="#special" className="hover:underline">
-                Today's Special
+                Today&apos;s Special
               </a>
             </li>
             <li>
@@ -49,30 +49,45 @@ function Navbar() {
   );
 }
 
-// ---------------- Data ----------------
-const todaySpecial = [
-  { name: "นมสด", price: 45, image: "/IMAGES/นมสด.jpg" },
-  { name: "โกโก้", price: 45, image: "/IMAGES/โกโก้.jpg" }
-];
-
-const menu = [
-  { name: "นมเย็น", price: 45, image: "/IMAGES/นมเย็น.jpeg" }
-];
+// ---------------- Data handled inside component ----------------
 
 // ---------------- CustomerPage ----------------
 function CustomerPage() {
-  const [tableNumber, setTableNumber] = useState("");
+  const [tableNumber, setTableNumber] = useState("")
+  const [drinks, setDrinks] = useState<IDrink[] | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>("")
 
-  const renderDrinkGrid = (items: any[]) => (
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/drink`, { method: "GET" })
+        const data = await res.json()
+        if (!res.ok) {
+          throw new Error(data?.message || "Failed to fetch drinks")
+        }
+        setDrinks(data)
+      } catch (err: unknown) {
+        console.error(err)
+        const message = err instanceof Error ? err.message : "Unexpected error"
+        setError(message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const renderDrinkGrid = (items: IDrink[]) => (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      {items.map((item, i) => (
+      {items.map((item) => (
         <div
-          key={i}
+          key={String(item.id)}
           className="relative text-center bg-white rounded flex flex-col overflow-hidden border border-black"
         >
           <div className="relative w-full">
-            <Image
-              src={item.image}
+            <img
+              src={item.img}
               alt={item.name}
               width={100}
               height={100}
@@ -82,7 +97,7 @@ function CustomerPage() {
             <Link
               href={{
                 pathname: "/custommenu",
-                query: { name: item.name, price: item.price, image: item.image },
+                query: { name: item.name, price: String(item.price), image: item.img },
               }}
               className="absolute bottom-2 right-2 bg-white text-3xl rounded-full border border-black w-10 h-10 flex items-center justify-center"
             >
@@ -114,8 +129,10 @@ function CustomerPage() {
           id="special"
           className="mt-6 border border-black p-2 rounded-sm bg-white"
         >
-          <h3 className="text-2xl font-bold mb-2 text-black">Today's Special</h3>
-          {renderDrinkGrid(todaySpecial)}
+          <h3 className="text-2xl font-bold mb-2 text-black">Today&apos;s Special</h3>
+          {loading && <p className="text-black">Loading...</p>}
+          {!loading && error && <p className="text-red-600">{error}</p>}
+          {!loading && !error && drinks && renderDrinkGrid(drinks.slice(0, 4))}
         </div>
 
         <div
@@ -123,7 +140,9 @@ function CustomerPage() {
           className="mt-6 border border-black p-2 rounded-sm bg-white"
         >
           <h3 className="text-2xl font-bold mb-2 text-black">Menu</h3>
-          {renderDrinkGrid(menu)}
+          {loading && <p className="text-black">Loading...</p>}
+          {!loading && error && <p className="text-red-600">{error}</p>}
+          {!loading && !error && drinks && renderDrinkGrid(drinks)}
         </div>
       </div>
     </div>
