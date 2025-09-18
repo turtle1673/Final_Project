@@ -39,9 +39,16 @@ export async function PATCH(req:Request,{params}:{params : {id : string}}){
 
 export async function DELETE(_req:Request,{params}: {params: {id: string}}) {
     try {
+        
         const id = Number(params.id)
+
+        await prisma.ingredient.deleteMany({
+            where: { drinkId: id }
+        })
+        
         const deletedDrink = await prisma.drink.delete({
-            where: { id }
+            where: { id },
+            include : {ingredients : true}
         })
         return NextResponse.json(({ message: "Drink deleted!", drink: deletedDrink }), { status: 200 })
     } catch (error: any) {

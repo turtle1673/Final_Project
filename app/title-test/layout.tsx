@@ -7,7 +7,7 @@ export default function TitleTestLayout({
 }>) {
   return (
 
-    <div className="min-h-screen bg-amber-50 p-4">
+    <div className="w-full h-full bg-amber-300 p-4">
         <TitleTestNav />
       {children}
     </div>

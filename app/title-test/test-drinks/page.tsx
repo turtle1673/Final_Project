@@ -1,6 +1,6 @@
 "use client"
 import TitleTestDrinks from "@/components/TitleTestDrinks"
-import { IDrink } from "@/types/drink"
+import { IDrink } from "@/types/idrink"
 import { useState,useEffect } from "react"
 
 export default function drinksPage() {

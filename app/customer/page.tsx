@@ -6,5 +6,5 @@ export default async function customer() {
     <>
       <CustomerForm/>
     </>
-  );
+  )
 }

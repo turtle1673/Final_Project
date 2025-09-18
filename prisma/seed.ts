@@ -10,11 +10,11 @@ async function main() {
     create: {
       name: "Manager",
       email,
-      //ถ้าจะ hash ค่อยทำทีหลัง
+      //ถ้าจะ hash ค่อยทำทีหลังไปทำอย่างอื่นก่อน
       password,
       role: "MANAGER",
     },
-  });
+  })
 
   console.log("Manager account :", manager);
 }

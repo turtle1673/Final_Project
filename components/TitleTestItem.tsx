@@ -1,4 +1,4 @@
-import { formatDateThai } from "@/app/(actions)/formathDate";
+import formatDateThai from "@/app/(actions)/formathDate";
 import { Iitem } from "@/types/item";
 
 export default function TitleTestItem({ items }: { items: Iitem[] }) {

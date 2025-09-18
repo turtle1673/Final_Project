@@ -23,7 +23,6 @@ enum userRole {
 
 enum statusOrder {
   PENDING
-  IN_PROGRESS
   COMPLETED
   CANCELLED
 }
@@ -47,6 +46,12 @@ enum sweetness {
   MORE_SUGAR
 }
 
+enum stockStatus {
+  OUT
+  LOW
+  OK
+}
+
 model User {
   id  String @id @default(cuid())
   name String?
@@ -64,7 +69,7 @@ model Drink {
   id         Int        @id @default(autoincrement())
   name        String
   price       Float
-  mainIngredient String
+  mainIngredient String?
   img String?
 
 
@@ -76,11 +81,12 @@ model StockItem {
   id          Int        @id @default(autoincrement())
   name     String
   category String
-  currentQuantity    Int? @default(0)
-  maxQuantity Int?
   unit     String
-  status  String?
+  maxQuantity Int
   img String?
+
+  currentQuantity    Int @default(0)
+  status  stockStatus @default(OUT)
   lastUpdated DateTime @default(now())
 
   useIn Ingredient[]
@@ -89,41 +95,41 @@ model StockItem {
 
 // relationships
 model Order {
-  addons        String
-  drinkType     drinkType @default(COLD)
-  sweetLevel sweetness @default(NORMAL_SUGAR)
-  cupSize       cupSize @default(MEDIUM)
+  id          Int        @id @default(autoincrement())
+  addon     Int?
+  drinkType   drinkType  @default(COLD)
+  sweetLevel  sweetness  @default(NORMAL_SUGAR)
+  cupSize     cupSize    @default(MEDIUM)
   orderStatus statusOrder @default(PENDING)
-  orderDate DateTime @default(now())
+  orderDate   DateTime   @default(now())
+  amount      Int        @default(1)
 
-  employee User @relation(fields: [employeeId], references: [id])
-  employeeId String
-  drink Drink @relation(fields: [drinkId], references: [id])
-  drinkId Int
-
-  @@id([employeeId, drinkId])
+  employee   User?   @relation(fields: [employeeId], references: [id])
+  employeeId String?
+  drink      Drink  @relation(fields: [drinkId], references: [id])
+  drinkId    Int
 }
 
 model Ingredient {
+  id      Int      @id @default(autoincrement())
   quantity Float
 
   stockItem StockItem @relation(fields: [stockItemId], references: [id])
   stockItemId Int
-  drink Drink @relation(fields: [drinkId], references: [id])
+  drink Drink @relation(fields: [drinkId], references: [id], onDelete: Cascade)
   drinkId Int
 
-  @@id([stockItemId, drinkId])
 }
 
 model Restock {
-  restockDate DateTime @default(now())
+  id  String @id  @default(uuid())
   oldQuantity Int
   newQuantity Int
-
-  stockItem StockItem @relation(fields: [stockItemId], references: [id])
-  stockItemId Int
-  employee User @relation(fields: [employeeId], references: [id])
+  totalQuantity Int
   employeeId String
 
-  @@id([stockItemId, employeeId])
+  restockDate DateTime @default(now())
+  stockItemId Int
+  stockItem StockItem @relation(fields: [stockItemId], references: [id])
+  employee User @relation(fields: [employeeId], references: [id])
 }
