@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ShopItemsGrid from '../../../components/ShopItemsGrid';
+// Showing drinks instead of ingredient stock items
 
 interface ShopItem {
   id: number;
@@ -11,42 +12,6 @@ interface ShopItem {
   category: string;
   imgUrl?: string;
 }
-
-// Mock data
-const mockShopItems: ShopItem[] = [
-  {
-    id: 1,
-    name: 'Thai Tea',
-    price: 4.50,
-    stock: 25,
-    category: 'DRINK',
-    imgUrl: '/api/placeholder/150/150'
-  },
-  {
-    id: 2,
-    name: 'Green Tea',
-    price: 3.50,
-    stock: 30,
-    category: 'DRINK',
-    imgUrl: '/api/placeholder/150/150'
-  },
-  {
-    id: 3,
-    name: 'Boba Pearls',
-    price: 1.00,
-    stock: 50,
-    category: 'TOPPING',
-    imgUrl: '/api/placeholder/150/150'
-  },
-  {
-    id: 4,
-    name: 'Coconut Jelly',
-    price: 1.50,
-    stock: 20,
-    category: 'TOPPING',
-    imgUrl: '/api/placeholder/150/150'
-  }
-];
 
 export default function ShopItemsPage() {
   const router = useRouter();
@@ -60,13 +25,47 @@ export default function ShopItemsPage() {
     const fetchItems = async () => {
       try {
         setLoading(true);
-        // In real app, this would be: const response = await fetch('/api/shop-items');
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-        setItems(mockShopItems);
+        const res = await fetch('/api/drink');
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.message || 'Failed to fetch drinks');
+        }
+        type DrinkApi = {
+          id: number;
+          name: string;
+          price: number;
+          img?: string;
+          ingredients?: Array<{
+            quantity: number; // required per schema
+            stockItem: { currentQuantity: number | null };
+          }>;
+        };
+
+        const computePossibleCups = (ingredients?: DrinkApi['ingredients']): number => {
+          if (!ingredients || ingredients.length === 0) return 0;
+          let minCups = Infinity;
+          for (const ing of ingredients) {
+            const available = ing.stockItem.currentQuantity ?? 0;
+            if (ing.quantity <= 0) continue;
+            const possible = Math.floor(available / ing.quantity);
+            if (possible < minCups) minCups = possible;
+          }
+          return Number.isFinite(minCups) ? minCups : 0;
+        };
+
+        const mapped: ShopItem[] = ((data || []) as DrinkApi[]).map((d) => ({
+          id: d.id,
+          name: String(d.name || ''),
+          price: Number(d.price || 0),
+          stock: computePossibleCups(d.ingredients),
+          category: 'DRINK',
+          imgUrl: d.img || undefined,
+        }));
+        setItems(mapped);
         setError(null);
       } catch (err) {
-        setError('Failed to load shop items');
-        console.error('Error fetching items:', err);
+        setError('Failed to load drinks');
+        console.error('Error fetching drinks:', err);
       } finally {
         setLoading(false);
       }

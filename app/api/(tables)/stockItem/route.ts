@@ -1,3 +1,4 @@
+import { uploadImg } from "@/app/(actions)/uploadImage";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
