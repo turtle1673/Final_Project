@@ -1,4 +1,4 @@
-import { uploadImg } from "@/app/(actions)/imageFileFunctions"
+import uploadImageFile from "@/lib/functions/imageFunctions/uploadImageFile"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
             return NextResponse.json({message:"filled all of values"},{status : 400})
         }
         
-        const img = await uploadImg(file)
+        const img = await uploadImageFile(file)
         const newDrink = await prisma.drink.create({
         data : {
             name,

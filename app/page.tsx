@@ -1,10 +1,12 @@
-"use client"
-import React from 'react'
+import { getServerSession } from "next-auth"
+import { authOptions } from "./api/auth/[...nextauth]/route"
 
 export default function homepage() {
+  const session = getServerSession(authOptions)
+  if(!session) alert ("no session")
   return (
-    <div className='text-black bg-amber-300 w-full'>
-      hello world
-    </div>
+    <>
+    <p>Hello</p>
+    </>
   )
 }

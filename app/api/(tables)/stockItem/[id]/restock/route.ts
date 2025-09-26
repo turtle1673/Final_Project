@@ -1,6 +1,6 @@
-import calStockStatus from "@/app/(actions)/calStockStatus"
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import calStockStatus from "@/lib/functions/calStockStatus"
 
 export async function PATCH(req:Request, {params} : {params : {id:string}}) {
     const id = Number(params.id)

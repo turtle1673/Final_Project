@@ -1,6 +1,6 @@
-import { completeOrder } from "@/app/(actions)/completeOrder";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { completeOrder } from "@/lib/functions/completeOrder";
 
 export async function PATCH(req: Request,context : { params: { id: string } }) {
   try {

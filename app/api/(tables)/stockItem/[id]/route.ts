@@ -1,4 +1,4 @@
-import calStockStatus from "@/app/(actions)/calStockStatus"
+import calStockStatus from "@/lib/functions/calStockStatus"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
