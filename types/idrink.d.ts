@@ -1,4 +1,4 @@
-export interface IDrink {
+export interface Idrink {
     id : string,
     name : string,
     price : number,

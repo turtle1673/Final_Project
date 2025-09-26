@@ -1,3 +1,4 @@
+import { uploadImg } from "@/app/(actions)/imageFileFunctions"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
@@ -11,31 +12,31 @@ export async function GET(_req: Request) {
 
 
 export async function POST(req: Request) {
-    const { name, price, img, ingList } = await req.json()
+    
     try{
+        const formData = await req.formData()
+        const name = formData.get("name") as string
+        const price = formData.get("price") as string
+        const file = formData.get("file") as File
+        const ingsRaw = formData.get("ings") as string
+        const ings = JSON.parse(ingsRaw)
         
         if(!parseFloat(price)){
             return NextResponse.json({message:"price must be number"},{status : 400})
         }
         
-        if (!name || !price ) {
+        if (!name || !price || !file ) {
             return NextResponse.json({message:"filled all of values"},{status : 400})
         }
         
-        
+        const img = await uploadImg(file)
         const newDrink = await prisma.drink.create({
         data : {
             name,
             price:parseFloat(price),
-            // mainIngredient,
             img,
             ingredients : {
-                create : ingList
-                // [
-                //     { quantity: 88, stockItemId: 4 },
-                //     { quantity: 99, stockItemId: 2 },
-                //     { quantity: 77, stockItemId: 3 }
-                // ]
+                create : ings
             }
         }
     })

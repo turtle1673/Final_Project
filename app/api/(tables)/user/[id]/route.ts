@@ -1,59 +1,81 @@
-import prisma from "@/lib/prisma"
-import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
-
-export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id
+export async function GET(_req: Request,{ params }: { params: Promise<{ id: string }> }) {
+  const {id} = await params
+ 
   const user = await prisma.user.findUnique({
     where: { id },
   })
 
   if (!user) {
-    return NextResponse.json(({ error: "User not found" }), {status: 404})
+    return NextResponse.json({ error : "User not found" }, { status: 404 });
   }
 
-  return NextResponse.json((user), { status: 200 })
+  return NextResponse.json({ data:user, messsage:"get user success" }, { status: 200 });
 }
 
-
-export async function PATCH(req: Request,{ params }: { params: { id: string } }) {
-  const id = params.id
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params
   const body = await req.json()
-
+  const {name,role} = body
   try {
+    const user = await prisma.user.findUnique({where: { id }})
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: body,
+      data: {
+        name,
+        role,
+        lastest_update:new Date()
+      }
     })
 
-    return NextResponse.json(({message:"user updated! ",user:updatedUser}), { status: 200 })
+    return NextResponse.json(
+      { message: "user updated! ", data: updatedUser },
+      { status: 200 }
+    )
   } catch (error: any) {
-    console.error("Error updating user:", error)
-    return NextResponse.json(({ message: "An unexpected error occurred",Error:error}),{ status: 500 })
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { message: "An unexpected error occurred" },
+      { status: 500 }
+    )
   }
 }
 
-
-export async function DELETE(_req: Request,{ params }: { params: { id: string } }) {
-  const id = params.id
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
   const existingUser = await prisma.user.findUnique({
     where: { id },
-  })
+  });
 
   if (!existingUser) {
-    return NextResponse.json(({ error: "User not found" }),{status: 404,})
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
 
   try {
     const deletedUser = await prisma.user.delete({
       where: { id },
-    })
-    return NextResponse.json(({ message: "User deleted successfully",user:deletedUser}), { status: 200 })
+    });
+    return NextResponse.json(
+      { message: "User deleted successfully", user: deletedUser },
+      { status: 200 }
+    );
   } catch (error: any) {
-    console.error("Error deleting user:", error)
-    return NextResponse.json(({ error: "An unexpected error occurred" }),{ status: 500 })
+    console.error("Error deleting user:", error);
+    return NextResponse.json(
+      { message: "An unexpected error occurred" },
+      { status: 500 }
+    );
   }
 }

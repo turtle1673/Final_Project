@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import ClientSessionProvider from "@/components/ClientSessionProvider";
-import LayoutWrapper from "@/components/LayoutWrapper";
 import { OrderProvider } from "./context/Ordercontext";
 
 const geistSans = Geist({
@@ -30,15 +29,14 @@ export default function RootLayout({
     <html lang="en">
       <ClientSessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <OrderProvider>
-            <LayoutWrapper>
-              <div className="min-h-screen bg-amber-50">
+            {/* <LayoutWrapper> */}
+              <div className="">
                 {/* <Navbar /> */}
                 {children}
               </div>
-            </LayoutWrapper>
+            {/* </LayoutWrapper> */}
           </OrderProvider>
         </body>
       </ClientSessionProvider>

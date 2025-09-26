@@ -43,17 +43,6 @@ export const authOptions:AuthOptions = ({
         session.user.id = String(token.id)
         session.user.role = token.role as string
     }
-    if(!session){
-      return {
-        user: {
-          id: "guest",
-          role: "CUSTOMER",
-          name: "Guest",
-          email: null,
-        },
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString()
-      }
-    }
     return session
   },
 },
