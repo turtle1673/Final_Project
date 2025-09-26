@@ -7,6 +7,7 @@ export async function GET(_req:Request,context:{params : {id : string}}){
         const id = Number(context.params.id)
         const drink = await prisma.drink.findUnique({
             where : {id},
+            include : {ingredients : {include : {stockItem : true}}}
         })
 
         if(!drink) return NextResponse.json({message:"drink not found "},{status:404})
@@ -38,9 +39,16 @@ export async function PATCH(req:Request,{params}:{params : {id : string}}){
 
 export async function DELETE(_req:Request,{params}: {params: {id: string}}) {
     try {
+        
         const id = Number(params.id)
+
+        await prisma.ingredient.deleteMany({
+            where: { drinkId: id }
+        })
+        
         const deletedDrink = await prisma.drink.delete({
-            where: { id }
+            where: { id },
+            include : {ingredients : true}
         })
         return NextResponse.json(({ message: "Drink deleted!", drink: deletedDrink }), { status: 200 })
     } catch (error: any) {

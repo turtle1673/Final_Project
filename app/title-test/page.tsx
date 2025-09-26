@@ -1,13 +1,24 @@
+"use server"
 
-export default function page() {
+import { getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]/route"
+import { Idrink } from "@/types/idrink"
+import TitleTestDrinks from "@/components/titleTest/TitleTestDrinks"
+
+export default async function UserInfo() {
+  const baseUrl = process.env.PUBLIC_BASE_URL
+  const res = await fetch(`${baseUrl}/api/drink`)
+  const drinks:Idrink[] = await res.json()
+
+  const session = await getServerSession(authOptions)
+  if(!session) return <p className="text-3xl text-cyan-400">welcome</p>
   return (
-      <>
-        <h1 className="text-black font-bold font-3xl text-center">Title Test Page</h1>
-        <div className="flex flex-col items-center justify-self-center bg-orange-300 rounded-2xl w-fit gap-4 p-4 mt-6">
-        <a href="/title-test/test-page">Test page</a>
-        <a href="/title-test/test-login">Test login</a>
-        <a href="/title-test/test-createuser">Test create user</a>
-        </div>
+    <>
+    <div>
+      <p>ยินดีต้อนรับ {session.user.name}</p>
+      <p>Role: {session.user.role}</p>
+    </div>
+    <TitleTestDrinks drinks={drinks}/>
     </>
   )
 }
