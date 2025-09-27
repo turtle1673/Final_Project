@@ -24,7 +24,7 @@ export default function LoginForm() {
     })
 
     if (res?.ok) {
-        router.push("/title-test")
+        router.push("/")
     } else {
       setLoading(false)
       setError("email หรือ password ไม่ถูกต้อง")

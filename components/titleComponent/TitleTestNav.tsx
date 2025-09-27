@@ -1,16 +1,23 @@
+"use server"
+import Ssession from "@/lib/getServerSession"
 import Link from "next/link"
-import TitleTestNavRole from "./TitleTestNavRole"
+import SignOutButton from "../SignOutButton"
 
 const navItems = [
   { name: 'customer', href: '/'},
   { name: 'employee', href: '/employee'},
   { name: 'manager', href: '/manager'},
   { name: 'create drink', href: '/manager/create-drink'},
+  { name: 'employees account', href: '/manager/employee-accounts'},
 
-  { name: 'login', href: '/title-test/login'},
+  // { name: 'login', href: '/login'},
 ]
 
-export default function TitleTestNav() {
+export default async function TitleTestNav() {
+  const session = await Ssession()
+  if(session){
+    console.log(session)
+  }
   return (
     <>
     <nav className="flex justify-between px-16 h-20 w-full bg-blue-900 text-white items-center">
@@ -21,7 +28,7 @@ export default function TitleTestNav() {
         )
       })}
       </div>
-        <TitleTestNavRole/>
+      {session? <SignOutButton/> : <Link href={"/login"}>staff only</Link> }
       </nav>
     </>
     )

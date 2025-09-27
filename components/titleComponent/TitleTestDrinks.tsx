@@ -1,7 +1,6 @@
 import { Idrink } from "@/types/idrink";
 import Image from "next/image";
 import TitleTestLoading from "./TitleTestLoading";
-import TitleTestCustomDrink from "./TitleTestCustomDrink";
 
 export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
   if (drinks.length === 0) return <TitleTestLoading/>
@@ -39,8 +38,6 @@ export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
         </li>
       ))}
     </ul>
-
-    <TitleTestCustomDrink />
   </>
   )
 }

@@ -1,45 +1,124 @@
-import TitleTestDeleteUserButton from "@/components/titleComponent/TitleTestDeleteUserButton"
-import TitleTestNotfound from "@/components/titleComponent/TitleTestNotfound"
-import formatToThaiDate from "@/lib/functions/formatToThaiDate"
-import { Iuser } from "@/types/iuser"
-import Link from "next/link"
+"use client";
+import TitleTestDeleteUserButton from "@/components/titleComponent/TitleTestDeleteUserButton";
+import TitleTestLoading from "@/components/titleComponent/TitleTestLoading";
+import TitleTestNotfound from "@/components/titleComponent/TitleTestNotfound";
+import { Iuser } from "@/types/iuser";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
 
-export default async function page({params} : {params : {id:string}}) {
-    const id = params.id
-    const baseUrl = process.env.PUBLIC_BASE_URL
-    const res = await fetch(`${baseUrl}/api/user/${id}`)
-    const {data,message} = await res.json()
-    const user:Iuser = data
-    if(res.status === 404){
-      return <TitleTestNotfound message={message} />
+export default function page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+  const [loading, setLoading] = useState(true)
+  const [isEdit, setIsEdit] = useState(false)
+  const [user, setUser] = useState<Iuser | null>(null)
+
+  const [name, setName] = useState<string>("")
+  const [role, setRole] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
+  const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter()
+
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(`/api/user/${id}`);
+      const json = await res.json();
+
+      if (res.status === 404) {
+        return <TitleTestNotfound message={json.error} />
+      }
+      if (!res.ok) {
+        throw new Error(json.error);
+      }
+
+      const user: Iuser = json.data
+      setUser(user)
+      setName(user.name)
+      setRole(user.role)
+      setEmail(user.email)
+    } catch (err: any) {
+      alert(err.message || "error fetching user");
+      console.log(err)
+    } finally {
+      setLoading(false)
     }
-    const isSeedEmail = user.email === process.env.FIRST_MANAGER_EMAIL
-
+  }
+  useEffect(() => {
+    if (id) {
+      fetchUser()
+    }
+  }, [])
+  if (loading) return <TitleTestLoading />
+  if (!user) return <TitleTestNotfound message="User not found" />;
+  const isSeedEmail = user.email === process.env.NEXT_PUBLIC_FIRST_MANAGER_EMAIL
 
   return (
     <>
-      <div className="bg-white mt-16 w-5xl border rounded-lg p-6 shadow-sm">
-        <h1 className="text-xl font-semibold mb-4">Employee Detail</h1>
-        <div className="flex justify-between">
-          <div className="w-1/3">
-            <p><span className="font-medium">ชื่อ :</span> {user.name || "-"}</p>
-        <p><span className="font-medium">อีเมล :</span> {user.email}</p>
-        <p><span className="font-medium">ตำแหน่ง :</span> {user.role}</p>
-        <p><span className="font-medium">เข้าร่วมเมื่อ :</span> {formatToThaiDate(user.create_at,"long")}</p>
+      <div className="bg-white mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">
+        <h1 className=" text-2xl font-bold text-teal-700 mb-6 border-b border-teal-100 pb-2">
+          Employee Detail
+        </h1>
 
-          </div>
-        
-        <div className="mt-6 flex flex-col justify-between w-1/5">
-          {isSeedEmail ? <></> : <TitleTestDeleteUserButton userId={user.id}/>}
-          <Link
-            href={`${user.id}/edit`}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        <div className="flex justify-between gap-6">
+          {/* Form */}
+          <form className="flex flex-col gap-4 flex-1">
+            <input
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              readOnly={!isEdit}
+              className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50"
+            />
+
+            <select
+              value={role}
+              onChange={e => setRole(e.target.value)}
+              disabled={!isEdit}
+              className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none disabled:bg-gray-50"
             >
-            Edit
-          </Link>
-        </div>
+              <option value="EMPLOYEE">Employee</option>
+              <option value="MANAGER">Manager</option>
+            </select>
+
+            <input
+              type="text"
+              value={email}
+              readOnly
+              className="focus:outline-none w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 text-gray-700"
+            />
+          </form>
+
+          {/* Action buttons */}
+          <div className="mt-2 flex flex-col gap-4 w-1/5 items-end">
+            {isEdit ? (
+              <button
+                type="button"
+                onClick={() => setIsEdit(false)}
+                className="bg-teal-600 text-white w-full px-4 py-2 rounded-md hover:bg-blue-600 transition-colors font-medium"
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsEdit(true)}
+                className="bg-teal-500 text-white w-full px-4 py-2 rounded-md hover:bg-teal-600 transition-colors font-medium"
+              >
+                Edit
+              </button>
+            )}
+            <button onClick={() => {
+              router.push("./")
+            }} className="bg-orange-500 text-white w-full px-4 py-2 rounded-md hover:bg-orange-600 transition-colors font-medium">
+              cancel
+            </button>
+            {!isSeedEmail && (
+              <TitleTestDeleteUserButton userId={user.id} />
+            )}
+          </div>
         </div>
       </div>
+
     </>
   )
 }
