@@ -4,7 +4,7 @@ import Link from "next/link"
 import SignOutButton from "../SignOutButton"
 
 const navItems = [
-  { name: 'customer', href: '/'},
+  { name: 'customer', href: '/customer'},
   { name: 'employee', href: '/employee'},
   { name: 'manager', href: '/manager'},
   { name: 'create drink', href: '/manager/create-drink'},
