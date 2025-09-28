@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <ClientSessionProvider>
         <body>
-          <main className="flex-1 w-full items-center bg-amber-50 text-black min-h-screen flex flex-col">
+          <main className="bg-amber-50 text-black min-h-screen">
             <TitleTestNav />
             {children}
           </main>

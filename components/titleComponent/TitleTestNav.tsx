@@ -7,10 +7,6 @@ const navItems = [
   { name: 'customer', href: '/customer'},
   { name: 'employee', href: '/employee'},
   { name: 'manager', href: '/manager'},
-  { name: 'create drink', href: '/manager/create-drink'},
-  { name: 'employees account', href: '/manager/employee-accounts'},
-
-  // { name: 'login', href: '/login'},
 ]
 
 export default async function TitleTestNav() {
