@@ -3,6 +3,6 @@ export interface Iuser {
     name:string
     email:string
     role:string
-    latest_update:string
+    lastest_update:string
     create_at:string
 }

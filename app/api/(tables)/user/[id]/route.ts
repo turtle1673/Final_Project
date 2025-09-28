@@ -25,7 +25,7 @@ export async function PATCH(
   try {
     const user = await prisma.user.findUnique({where: { id }})
     if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const updatedUser = await prisma.user.update({
@@ -43,10 +43,7 @@ export async function PATCH(
     )
   } catch (error: any) {
     console.error("Error updating user:", error);
-    return NextResponse.json(
-      { message: "An unexpected error occurred" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "An unexpected error occurred" },{ status: 500 })
   }
 }
 

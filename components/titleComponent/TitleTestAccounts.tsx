@@ -2,11 +2,11 @@ import formatToThaiDate from "@/lib/functions/formatToThaiDate";
 import { Iuser } from "@/types/iuser";
 import Link from "next/link";
 
-export default function TitleTestAccounts({ accounts }: { accounts: Iuser[] }) {
+export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[] }) {
 
   return (
     <>
-    <div className="overflow-x-auto w-5/6 rounded-lg shadow-lg bg-white p-6">
+    
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
           <tr>
@@ -38,7 +38,7 @@ export default function TitleTestAccounts({ accounts }: { accounts: Iuser[] }) {
               <td className="px-6 py-4 font-medium text-gray-800">{emp.name}</td>
               <td className="px-6 py-4 text-gray-700">{emp.email}</td>
               <td className="px-6 py-4 text-teal-600 font-semibold">{emp.role}</td>
-              <td className="px-6 py-4 text-gray-500">{emp.latest_update}</td>
+              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.lastest_update)}</td>
               <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.create_at,"long")}</td>
               <td className="px-6 py-4 text-right">
                 <Link
@@ -52,7 +52,6 @@ export default function TitleTestAccounts({ accounts }: { accounts: Iuser[] }) {
           ))}
         </tbody>
       </table>
-    </div>
   </>
   )
 }

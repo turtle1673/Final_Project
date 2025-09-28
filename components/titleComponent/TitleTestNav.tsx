@@ -1,7 +1,7 @@
-"use server"
-import Ssession from "@/lib/getServerSession"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import Link from "next/link"
-import SignOutButton from "../SignOutButton"
+import TitleTestNavRole from "./TitleTestNavRole"
 
 const navItems = [
   { name: 'customer', href: '/'},
@@ -10,9 +10,9 @@ const navItems = [
 ]
 
 export default async function TitleTestNav() {
-  const session = await Ssession()
+  const session = await getServerSession(authOptions)
   if(session){
-    console.log(session)
+    console.log("now you have a session")
   }
   return (
     <>
@@ -24,7 +24,7 @@ export default async function TitleTestNav() {
         )
       })}
       </div>
-      {session? <SignOutButton/> : <Link href={"/login"}>staff only</Link> }
+        <TitleTestNavRole />
       </nav>
     </>
     )

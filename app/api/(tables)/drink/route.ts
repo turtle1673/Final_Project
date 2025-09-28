@@ -3,11 +3,16 @@ import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 export async function GET(_req: Request) {
-    const drinks = await prisma.drink.findMany({
-        include : {ingredients : true}
-    })
+    try{
+        const drinks = await prisma.drink.findMany({
+            include : {ingredients : true}
+        })
 
-    return NextResponse.json(drinks, { status: 200 })
+        return NextResponse.json({data:drinks}, { status: 200 })
+    }catch(err:any){
+        return NextResponse.json({error:"Internal server error"},{status:500})
+    }
+    
 }
 
 
@@ -22,11 +27,11 @@ export async function POST(req: Request) {
         const ings = JSON.parse(ingsRaw)
         
         if(!parseFloat(price)){
-            return NextResponse.json({message:"price must be number"},{status : 400})
+            return NextResponse.json({error:"price must be number"},{status : 400})
         }
         
         if (!name || !price || !file ) {
-            return NextResponse.json({message:"filled all of values"},{status : 400})
+            return NextResponse.json({error:"filled all of values"},{status : 400})
         }
         
         const img = await uploadImageFile(file)
@@ -40,9 +45,9 @@ export async function POST(req: Request) {
             }
         }
     })
-        return NextResponse.json({ message: "Drink created! ", drink: newDrink }, { status: 201 })
+        return NextResponse.json({ message: "Drink created! ", data: newDrink }, { status: 201 })
     } catch (error: any) {
         console.error("Error creating drink : ", error)
-        return NextResponse.json({ message:error.message || "An unexpected error occurred"}, { status: 500 })
+        return NextResponse.json({error:"Internal server error"}, { status: 500 })
     }
 }

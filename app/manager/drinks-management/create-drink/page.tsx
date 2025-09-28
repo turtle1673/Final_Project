@@ -6,6 +6,7 @@ interface ing {
   name:string
   quantity:number
 }
+
 export default function page() {
 const [ings, setIngs] = useState<ing[]>([])
 
@@ -15,7 +16,8 @@ const [ings, setIngs] = useState<ing[]>([])
       setIngs([
         {id:1,name:"a",quantity:20},
         {id:2,name:"b",quantity:20}
-    ])
+      ])
+      
       const formData = new FormData(e.currentTarget)
       formData.append("ings",JSON.stringify(ings))
       const res = await fetch("/api/drink",{
