@@ -31,7 +31,7 @@ export default function TitleTestDeleteUserButton({ userId }: { userId: string }
     }
 
   return (
-    <button onClick={handleDelete} className="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-red-600 transition">
+    <button type="button" onClick={handleDelete} className="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-red-600 transition">
       delete
     </button>
   )
