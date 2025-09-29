@@ -1,11 +1,12 @@
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export async function GET(_req: Request, {params}:{params : {id:string}}) {
+export async function GET(_req: Request, {params}:{params : Promise<{id:string}>}) {
     try {
-        const id = Number(params.id)
+        const {id} = await params
+        const orderId = Number(id)
         const order = await prisma.order.findUnique({
-            where: { id },
+            where: { id: orderId },
             include: {drink:true}
         })
 

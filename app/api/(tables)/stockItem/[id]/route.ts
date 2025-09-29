@@ -2,11 +2,12 @@ import calStockStatus from "@/lib/functions/calStockStatus"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export async function GET(_req:Request,{params} : {params : {id:string}}) {
-    const id = Number(params.id)
+export async function GET(_req:Request,{params} : {params : Promise<{id:string}>}) {
+    const {id} = await params
+    const stockId = Number(id)
     try{
         const item = await prisma.stockItem.findUnique({
-            where: { id }
+            where: { id: stockId }
         })
 
         if(!item){
@@ -21,19 +22,20 @@ export async function GET(_req:Request,{params} : {params : {id:string}}) {
 }
 
 
-export async function PATCH(req:Request, {params} : {params : {id:string}}) {
-    const id = Number(params.id)
+export async function PATCH(req:Request, {params} : {params : Promise<{id:string}>}) {
+    const {id} = await params
+    const stockId = Number(id)
     const body = await req.json()
     const {name,maxQuantity,unit,category,img} = body
     try{
         //ดูว่ามีสตอกไอดีที่กำลังหาอยู่จริงป่าว
-        const stock = await prisma.stockItem.findUnique({where:{id}})
+        const stock = await prisma.stockItem.findUnique({where:{id: stockId}})
         if(!stock){
             return NextResponse.json({ message: "Item not found" },{status:404})
         }
         //อัพเดท metadata ของ stockItem
         const updatedItem = await prisma.stockItem.update({
-            where: {id},
+            where: {id: stockId},
             data : {
                 name:name || stock.name,
                 maxQuantity:maxQuantity || stock.maxQuantity,
@@ -52,11 +54,12 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
 }
 
 
-export async function DELETE(_req:Request, {params} : {params : {id:string}}) {
-    const id = Number(params.id)
+export async function DELETE(_req:Request, {params} : {params : Promise<{id:string}>}) {
+    const {id} = await params
+    const stockId = Number(id)
     try{
         const deleteItem = await prisma.stockItem.delete({
-            where:{id}
+            where:{id: stockId}
         })
 
         if(!deleteItem){
