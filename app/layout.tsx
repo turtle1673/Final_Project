@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import ClientSessionProvider from "@/components/ClientSessionProvider"
+import { OrderProvider } from "@/components/OrderProvider"
 import TitleTestNav from "@/components/titleComponent/TitleTestNav";
 
 export const metadata: Metadata = {
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClientSessionProvider>
-        <body>
-          <main className="bg-amber-50 text-black min-h-screen">
-            <TitleTestNav />
-            {children}
-          </main>
-        </body>
+        <OrderProvider>
+          <body>
+            <main className="bg-amber-50 text-black min-h-screen">
+              <TitleTestNav />
+              {children}
+            </main>
+          </body>
+        </OrderProvider>
       </ClientSessionProvider>
     </html>
   );

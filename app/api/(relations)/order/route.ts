@@ -1,16 +1,20 @@
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export async function GET(_req: Request) {
+export async function GET() {
     try {
         const orders = await prisma.order.findMany({
-            where: { orderStatus: "PENDING" },
-            orderBy : { id : "asc" }
+            include: {
+                drink: true,
+                employee: true
+            },
+            orderBy : { orderDate : "desc" }
         })
         return NextResponse.json(orders, { status: 200 })
-    }catch (error: any) {
+    }catch (error: unknown) {
         console.error("Error fetching orders:", error)
-        return NextResponse.json({ error: error.message || "An unexpected error occurred" }, { status: 500 })
+        const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred"
+        return NextResponse.json({ error: errorMessage }, { status: 500 })
     }
 }
 
@@ -30,8 +34,9 @@ export async function POST(req: Request) {
             }
         })
         return NextResponse.json(newOrder, { status: 201 })
-    }catch (err:any) {
+    }catch (err: unknown) {
         console.error("Error creating order:", err)
-        return NextResponse.json({ error: err.message || "An unexpected error occurred" }, { status: 500 })
+        const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred"
+        return NextResponse.json({ error: errorMessage }, { status: 500 })
     }
 }
