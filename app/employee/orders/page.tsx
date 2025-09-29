@@ -332,7 +332,19 @@ export default function StaffOrdersPage() {
                       {order.amount}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                      ${(order.drink.price * order.amount).toFixed(2)}
+                      ฿{(() => {
+                        // Calculate price including extras (same logic as customer cart)
+                        const basePrice = order.drink.price;
+                        let extra = 0;
+                        
+                        if (order.drinkType === 'MIXED') extra += 5;
+                        if (order.addon) extra += 5;
+                        if (order.cupSize === 'MEDIUM') extra += 5;
+                        if (order.cupSize === 'LARGE') extra += 10;
+
+                        const totalPrice = (basePrice + extra) * order.amount;
+                        return totalPrice;
+                      })()}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.orderStatus)}`}>

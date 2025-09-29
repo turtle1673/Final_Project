@@ -5,7 +5,7 @@ export interface Iitem {
   currentQuantity: number;
   maxQuantity: number;
   unit: string;
-  status: string;
+  status: 'OUT' | 'LOW' | 'OK';
   img: string;
   lastUpdated: string;
 }
