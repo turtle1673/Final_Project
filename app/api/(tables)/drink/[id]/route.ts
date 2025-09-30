@@ -10,12 +10,11 @@ export async function GET(_req:Request,context:{params : {id : string}}){
             include : {ingredients : {include : {stockItem : true}}}
         })
 
-        if(!drink) return NextResponse.json({message:"drink not found "},{status:404})
+        if(!drink) return NextResponse.json({error:"drink not found "},{status:404})
         
-        return NextResponse.json((drink),{status:200})
-    }catch(error:any){
-        console.log(error)
-        return NextResponse.json({message:"Internal server error"},{status:500})
+        return NextResponse.json({data:drink},{status:200})
+    }catch(err:any){
+        return NextResponse.json({error:err.message || "Internal server error"},{status:500})
     }
 }
 
@@ -29,10 +28,9 @@ export async function PATCH(req:Request,{params}:{params : {id : string}}){
             data:body
         })
 
-        return NextResponse.json({message:"drink updated ", drink:updateDrink})
-    }catch(error:any){
-        console.log(error)
-        return NextResponse.json({message:"Internal server error"},{status:500})
+        return NextResponse.json({message:"drink updated ", data:updateDrink},{status:200})
+    }catch(err:any){
+        return NextResponse.json({error:err.message || "Internal server error"},{status:500})
     }
 }
 
@@ -50,10 +48,10 @@ export async function DELETE(_req:Request,{params}: {params: {id: string}}) {
             where: { id },
             include : {ingredients : true}
         })
-        return NextResponse.json(({ message: "Drink deleted!", drink: deletedDrink }), { status: 200 })
-    } catch (error: any) {
-        console.error("Error deleting drink:", error)
-        return NextResponse.json(({ error: error.message || "An unexpected error occurred" }), { status: 500 }
+        
+        return NextResponse.json(({ message: "Drink deleted!", data: deletedDrink }), { status: 200 })
+    } catch (err: any) {
+        return NextResponse.json(({ error: err.message || "An unexpected error occurred" }), { status: 500 }
         )
     }
 }

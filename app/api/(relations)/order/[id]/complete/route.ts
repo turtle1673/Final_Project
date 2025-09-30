@@ -11,13 +11,13 @@ export async function PATCH(req: Request,context : { params: { id: string } }) {
       where:{id:employeeId}
     })
     if(!employee){
-      return NextResponse.json({message:"not found this employee id in database"})
+      return NextResponse.json({error:"not found this employee id in database"},{status:404})
     }
 
     const order = await completeOrder(orderId, employeeId);
 
-    return NextResponse.json({updateOrder:order}, { status: 200 })
-  } catch (error: any) {
-    return NextResponse.json({message: error.message }, { status: 400 })
+    return NextResponse.json({message:"success in complete order",data:order}, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({error: err.message || "Internal server error"}, { status: 400 })
   }
 }

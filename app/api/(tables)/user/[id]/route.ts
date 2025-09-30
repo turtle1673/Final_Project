@@ -1,25 +1,23 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(_req: Request,{ params }: { params: Promise<{ id: string }> }) {
-  const {id} = await params
+export async function GET(_req: Request,{ params }: { params: { id: string } }) {
+  const {id} = params
  
-  const user = await prisma.user.findUnique({
-    where: { id },
-  })
+  const user = await prisma.user.findUnique({where: { id }})
 
   if (!user) {
     return NextResponse.json({ error : "User not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ data:user, messsage:"get user success" }, { status: 200 });
+  return NextResponse.json({ data:user }, { status: 200 });
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { id } = params
   const body = await req.json()
   const {name,role} = body
   try {
@@ -32,47 +30,34 @@ export async function PATCH(
       where: { id },
       data: {
         name,
-        role,
-        lastest_update:new Date()
+        role
       }
     })
 
-    return NextResponse.json(
-      { message: "user updated! ", data: updatedUser },
-      { status: 200 }
-    )
-  } catch (error: any) {
-    console.error("Error updating user:", error);
-    return NextResponse.json({ error: "An unexpected error occurred" },{ status: 500 })
+    return NextResponse.json({ message: "user updated! ", data: updatedUser },{ status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ error:err.message || "Internal server error" },{ status: 500 })
   }
 }
 
-export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
-  const existingUser = await prisma.user.findUnique({
-    where: { id },
-  });
-
-  if (!existingUser) {
-    return NextResponse.json({ message: "User not found" }, { status: 404 });
-  }
-
+export async function DELETE(_req: Request,{ params }: { params: { id: string } }) {
   try {
-    const deletedUser = await prisma.user.delete({
-      where: { id },
-    });
-    return NextResponse.json(
-      { message: "User deleted successfully", user: deletedUser },
-      { status: 200 }
-    );
-  } catch (error: any) {
-    console.error("Error deleting user:", error);
-    return NextResponse.json(
-      { message: "An unexpected error occurred" },
-      { status: 500 }
-    );
+    const id = params.id;
+    const user = await prisma.user.findUnique({where: { id }})
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    if(user.email === process.env.NEXT_PUBLIC_SEED_EMAIL){
+      return NextResponse.json({error:"Can not delete seed user"},{status:400})
+    }
+
+    //delete user by id
+    const deletedUser = await prisma.user.delete({where: { id }})
+
+    return NextResponse.json({ message: "User deleted successfully", data: deletedUser },{ status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ error:err.message || "Internal server error" },{ status: 500 }
+    )
   }
 }

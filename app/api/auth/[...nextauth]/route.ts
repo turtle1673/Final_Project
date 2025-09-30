@@ -18,7 +18,10 @@ export const authOptions:AuthOptions = ({
           where: { email: credentials.email },
         })
         if (!user) return null
-
+        //เช็คว่า password ที่ส่งมาจาก form ตรงกันกับ user password ที่อยู่ใน supabase หรือป่าว
+        const valid = credentials.password === user.password
+        if(!valid) return null
+        
         // const valid = await bcrypt.compare(credentials.password, user.password)
         // if (!valid) return null
 

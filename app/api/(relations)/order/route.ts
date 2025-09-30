@@ -8,30 +8,37 @@ export async function GET(_req: Request) {
             orderBy : { id : "asc" }
         })
         return NextResponse.json(orders, { status: 200 })
-    }catch (error: any) {
-        console.error("Error fetching orders:", error)
-        return NextResponse.json({ error: error.message || "An unexpected error occurred" }, { status: 500 })
+    }catch (err: any) {
+        return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 })
     }
 }
 
 export async function POST(req: Request) {
     try {
         const body = await req.json()
-        const { drinkId, cupSize, sweetLevel, addon, drinkType, amount} = body
+        const { drinkId, cupSize, sweetLevel, addon, drinkType, amount, totalPrice} = body
+
+        const drink = await prisma.drink.findUnique({
+            where:{id:drinkId}
+        })
+
+        if(!drink){
+            return NextResponse.json({error:"drink not found"},{status:400})
+        }
 
         const newOrder = await prisma.order.create({
-            data: {
-                drinkId,
-                cupSize,
-                sweetLevel,
+            data : {
                 addon,
                 drinkType,
-                amount
+                sweetLevel,
+                cupSize,
+                amount,
+                totalPrice,
+                drinkId
             }
         })
-        return NextResponse.json(newOrder, { status: 201 })
+        return NextResponse.json({message:"order created!", data:newOrder}, { status: 201 })
     }catch (err:any) {
-        console.error("Error creating order:", err)
-        return NextResponse.json({ error: err.message || "An unexpected error occurred" }, { status: 500 })
+        return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 })
     }
 }

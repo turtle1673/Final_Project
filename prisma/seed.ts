@@ -2,8 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = process.env.FIRST_MANAGER_EMAIL
-  const password = process.env.FIRST_MANAGER_PASSWORD
+  const email = process.env.NEXT_PUBLIC_SEED_EMAIL
+  const password = process.env.NEXT_PUBLIC_SEED_PASSWORD
+  
   const manager = await prisma.user.upsert({
     where: { email },
     update: { name: "Manager Tle"},

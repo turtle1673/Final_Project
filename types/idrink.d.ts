@@ -2,6 +2,7 @@ export interface Idrink {
     id : string,
     name : string,
     price : number,
-    mainIngredient : string,
-    img : string
+    img : string | "no image",
+    createAt: string
+    updateAt : string
 }

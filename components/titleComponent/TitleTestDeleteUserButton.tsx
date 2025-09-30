@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation"
 export default function TitleTestDeleteUserButton({ userId }: { userId: string }) {
     const router = useRouter()
      const handleDelete = async () => {
-      if (!confirm("Are you sure you want to delete this user?")) return
+      if (!confirm("ต้องการลบบัญชีนี้หรือไม่")) return
       try{
         //เช็คว่าเป็น seed email รึเปล่า
         const res1 = await fetch(`/api/user/${userId}`)
         let json = await res1.json()
         if(!res1.ok) throw new Error(json.error)
         const user = json.data
-        const isSeedEmail = user.email === process.env.NEXT_PUBLIC_FIRST_MANAGER_EMAIL
+        const isSeedEmail = user.email === process.env.NEXT_PUBLIC_SEED_EMAIL
         if(isSeedEmail){
           throw new Error("Cannot delete seed user")
         }

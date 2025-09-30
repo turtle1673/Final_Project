@@ -26,7 +26,7 @@ export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[
               Create Date
             </th>
             <th scope="col" className="px-6 py-3 text-right font-bold uppercase tracking-wider">
-              <Link href={"employee-accounts/create-employee-account"} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+              <Link href={"accounts-management/create-employee-account"} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                 Add new account
               </Link>
             </th>
@@ -38,11 +38,11 @@ export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[
               <td className="px-6 py-4 font-medium text-gray-800">{emp.name}</td>
               <td className="px-6 py-4 text-gray-700">{emp.email}</td>
               <td className="px-6 py-4 text-teal-600 font-semibold">{emp.role}</td>
-              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.lastest_update)}</td>
-              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.create_at,"long")}</td>
+              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.updateAt)}</td>
+              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.createAt,"long")}</td>
               <td className="px-6 py-4 text-right">
                 <Link
-                  href={`employee-accounts/${emp.id}`}
+                  href={`accounts-management/${emp.id}`}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                 >
                   Manage

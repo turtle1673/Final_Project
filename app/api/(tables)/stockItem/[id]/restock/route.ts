@@ -7,14 +7,14 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
     const body = await req.json()
     const { newQuantity,employeeId } = body
     try{
-        //ดูว่ามีสตอกไอดีที่กำลังหาอยู่จริงป่าว
+        //ดูว่ามี id ของสตอกและพนักงานที่กำลังหาอยู่จริงป่าว
         const employee = await prisma.user.findUnique({ where : {id:employeeId}})
         if(!employee){
-            return NextResponse.json({message:"Employee not found"},{status:404})
+            return NextResponse.json({error:"Employee not found"},{status:404})
         }
         const stock = await prisma.stockItem.findUnique({where:{id}})
         if(!stock){
-            return NextResponse.json({ message: "Item not found" },{status:404})
+            return NextResponse.json({ error: "Item not found" },{status:404})
         }
         
         //เติมสตอกและสร้างประวัติการอัพเดท
@@ -36,9 +36,8 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
                 }
             }
         })
-        return NextResponse.json({message:"Stock updated",stokcItem:updatedItem},{status:200})
-    }catch(error:any){
-        console.log("Error " + error)
-        return NextResponse.json({message:error.message || "An unexpected error occurred"}, { status: 500 })
+        return NextResponse.json({message:"Stock updated",data:updatedItem},{status:200})
+    }catch(err:any){
+        return NextResponse.json({err:err.message || "Internal server error"}, { status: 500 })
     }
 }

@@ -9,9 +9,8 @@ export async function GET(_req: Request, {params}:{params : {id:string}}) {
             include: {drink:true}
         })
 
-        return NextResponse.json(order, { status: 200 })
-    }catch (error: any) {
-        console.error("Error fetching order:", error)
-        return NextResponse.json({ error: error.message || "An unexpected error occurred" }, { status: 500 })
+        return NextResponse.json({data:order}, { status: 200 })
+    }catch (err: any) {
+        return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 })
     }
 }

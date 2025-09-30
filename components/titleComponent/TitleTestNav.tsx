@@ -4,7 +4,8 @@ import Link from "next/link"
 import TitleTestNavRole from "./TitleTestNavRole"
 
 const navItems = [
-  { name: 'customer', href: '/'},
+  { name: 'page', href: '/'},
+  { name: 'customer', href: '/customer'},
   { name: 'employee', href: '/employee'},
   { name: 'manager', href: '/manager'},
 ]
@@ -24,7 +25,7 @@ export default async function TitleTestNav() {
         )
       })}
       </div>
-        <TitleTestNavRole />
+        <TitleTestNavRole/>
       </nav>
     </>
     )

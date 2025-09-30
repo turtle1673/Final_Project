@@ -10,30 +10,30 @@ export async function GET(_req:Request,{params} : {params : {id:string}}) {
         })
 
         if(!item){
-            return NextResponse.json({message:"Item not found"},{status:404})
+            return NextResponse.json({error:"Item not found"},{status:404})
         }
 
-        return NextResponse.json(item,{status:200})
-    }catch(error:any){
-        console.log("Error " + error)
-        return NextResponse.json({message:error.message || "An unexpected error occurred"}, { status: 500 })
+        return NextResponse.json({data:item},{status:200})
+    }catch(err:any){
+        return NextResponse.json({error:err.message || "Internal server error"}, { status: 500 })
     }
 }
 
 
 export async function PATCH(req:Request, {params} : {params : {id:string}}) {
-    const id = Number(params.id)
-    const body = await req.json()
-    const {name,maxQuantity,unit,category,img} = body
     try{
+        const {id} = params
+        const stockId = Number(id)
+        const body = await req.json()
+        const {name,maxQuantity,unit,category,img} = body
         //ดูว่ามีสตอกไอดีที่กำลังหาอยู่จริงป่าว
-        const stock = await prisma.stockItem.findUnique({where:{id}})
+        const stock = await prisma.stockItem.findUnique({where:{id:stockId}})
         if(!stock){
-            return NextResponse.json({ message: "Item not found" },{status:404})
+            return NextResponse.json({ error: "Item not found" },{status:404})
         }
         //อัพเดท metadata ของ stockItem
         const updatedItem = await prisma.stockItem.update({
-            where: {id},
+            where: {id:stockId},
             data : {
                 name:name || stock.name,
                 maxQuantity:maxQuantity || stock.maxQuantity,
@@ -44,10 +44,9 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
             }
         })
 
-        return NextResponse.json({message:"Stock updated",stokcItem:updatedItem},{status:200})
-    }catch(error:any){
-        console.log("Error " + error)
-        return NextResponse.json({message:error.message || "An unexpected error occurred"}, { status: 500 })
+        return NextResponse.json({message:"Stock updated",data:updatedItem},{status:200})
+    }catch(err:any){
+        return NextResponse.json({error:err.message || "Internal server error"}, { status: 500 })
     }
 }
 
@@ -64,8 +63,7 @@ export async function DELETE(_req:Request, {params} : {params : {id:string}}) {
         }
 
         return NextResponse.json({message:"Item deleted",item:deleteItem},{status:200})
-    }catch(error:any){
-        console.log("Error " + error)
-        return NextResponse.json({message:error.message || "An unexpected error occurred"}, { status: 500 })
+    }catch(err:any){
+        return NextResponse.json({message:err.message || "An unexpected error occurred"}, { status: 500 })
     }
 }

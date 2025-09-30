@@ -1,6 +1,6 @@
 "use server"
 
-import DrinksListManagement from "@/components/titleComponent/DrinksListManagement"
+import TitleTestDrinks from "@/components/titleComponent/TitleTestDrinks"
 
 export default async function DrinksManagement() {
   const baseUrl = process.env.PUBLIC_BASE_URL
@@ -11,10 +11,11 @@ export default async function DrinksManagement() {
   }
   const drinks = json.data
 
+  if(drinks.length === 0 ) return <p>drinks menu is empty</p>
   return (
     <>
       <header className="uppercase text-blue-900 text-3xl font-bold my-10">เมนู เครื่องดื่มปัจจุบัน</header>
-      <DrinksListManagement drinks={drinks} />
+      <TitleTestDrinks drinks={drinks} />
     </>
   )
 }

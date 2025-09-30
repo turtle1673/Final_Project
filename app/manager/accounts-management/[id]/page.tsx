@@ -37,7 +37,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSaving(true)
       setSaving(true)
       try {
         const res = await fetch(`/api/user/${id}`, {

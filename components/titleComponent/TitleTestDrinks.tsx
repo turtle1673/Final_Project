@@ -1,43 +1,56 @@
+import formatToThaiDate from "@/lib/functions/formatToThaiDate";
 import { Idrink } from "@/types/idrink";
-import Image from "next/image";
-import TitleTestLoading from "./TitleTestLoading";
+import Link from "next/link";
 
 export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
-  if (drinks.length === 0) return <TitleTestLoading/>
+  if (drinks.length === 0) return <p>no drink found</p>
   return (
     <>
-    <ul className="grid grid-cols-6 gap-4">
-      {drinks.map((drink) => (
-        <li
-          key={drink.id}
-          className="col-span-1 flex flex-col items-center bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200"
-        >
-          {/* รูป */}
-          <div className="h-48 w-48 overflow-hidden rounded-xl">
-            <Image
-              src={drink.img}
-              width={300}
-              height={300}
-              alt="drink image"
-              className="object-cover w-full h-full"
-            />
-          </div>
-
-          {/* เนื้อหา */}
-          <div className="flex justify-between items-center w-full mt-3">
-            <div className="flex flex-col">
-              <p className="text-lg font-semibold text-gray-800">
-                {drink.name}
-              </p>
-              <p className="text-sm text-gray-600">{drink.price} ฿</p>
-            </div>
-            <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow">
-              Order
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <table>
+      <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
+          <tr>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              image
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              Price
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              Lastest Update
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              Create Date
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              <Link href="drinks-management/create-drink" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                Add a new drink
+              </Link>
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-100">
+          {drinks.map(drink => (
+            <tr key={drink.id} className="hover:bg-blue-50 transition">
+              <td className="px-6 py-4 font-medium text-gray-800">{drink.img}</td>
+              <td className="px-6 py-4 text-gray-700">{drink.name}</td>
+              <td className="px-6 py-4 text-teal-600 font-semibold">{drink.price}</td>
+              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(drink.updateAt)}</td>
+              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(drink.createAt,"long")}</td>
+              <td className="px-6 py-4 text-right">
+                <Link
+                  href={`drinks-management/${drink.id}`}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                >
+                  Manage
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+    </table>
   </>
   )
 }
