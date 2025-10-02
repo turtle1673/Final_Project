@@ -1,10 +1,13 @@
 import prisma from "@/lib/prisma"
-import { NextResponse } from "next/server"
+import { statusOrder } from "@prisma/client"
+import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(_req: Request) {
+export async function GET(req: NextRequest) {
     try {
+        const searchParams = req.nextUrl.searchParams
+        const status = searchParams.get("status")
         const orders = await prisma.order.findMany({
-            where: { orderStatus: "PENDING" },
+            where: status? { orderStatus:status as statusOrder } : {},
             orderBy : { createAt : "asc" },
             include : {drink : true}
         })
@@ -18,10 +21,6 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const { drinkId, cupSize, sweetLevel, addon, drinkType, amount, totalPrice} = body
-        // const addon = Number(Saddon)
-        // const amount = Number(Samount)
-
-        // if(!addon || !amount) return NextResponse.json({error:"Input type error"},{status:400})
 
         const drink = await prisma.drink.findUnique({
             where:{id:drinkId}

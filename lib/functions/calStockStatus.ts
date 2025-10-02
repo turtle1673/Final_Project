@@ -1,11 +1,11 @@
-const calStockStatus = (currentQuantity:number,maxQuantity:number) => {
-    const statusRatio = maxQuantity / 3
-    if (currentQuantity <= 0) {
+const calStockStatus = (stockCurrent:number,stockMax:number) => {
+    const statusRatio = stockMax / 3
+    if(stockCurrent <= 0){
         return "OUT"
-    }else if (currentQuantity > statusRatio) {
-        return "OK"
-    }else {
+    }else if(stockCurrent <= statusRatio){
         return "LOW"
+    }else{
+        return "OK"
     }
 }
 

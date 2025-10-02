@@ -7,7 +7,7 @@ export default function Stocks({ stocks }: { stocks: Iitem[] }) {
     <>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
-          <tr className="text-base">
+          <tr className="text-lg">
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase">
               ชื่อรายการ
             </th>
@@ -28,9 +28,6 @@ export default function Stocks({ stocks }: { stocks: Iitem[] }) {
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase">
               อัพเดทเมื่อวันที่
-            </th>
-            <th scope="col" className="px-6 py-3 text-left font-bold uppercase">
-              เพิ่มเมื่อวันที่
             </th>
             <th scope="col" className="px-6 py-3 text-right font-bold uppercase">
               <Link href={"stocks-management/create-stock-item"} className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">
@@ -54,7 +51,6 @@ export default function Stocks({ stocks }: { stocks: Iitem[] }) {
                     : "text-red-600"
                 }`}>{s.status}</td>
               <td className="px-6 py-4 text-gray-500">{formatToThaiDate(s.updateAt)}</td>
-              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(s.createAt, "long")}</td>
               <td className="px-6 py-4 text-right">
                 <Link
                   href={`stocks-management/${s.id}`}

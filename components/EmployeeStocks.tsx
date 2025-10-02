@@ -37,7 +37,7 @@ export default function EmployeeStock({ stocks }: { stocks: Iitem[] }) {
               <td className="px-6 py-4 font-semibold text-teal-600">{s.name}</td>
               <td className="px-6 py-4 text-gray-700">{s.category}</td>
               <td className="px-6 py-4 text-gray-700">{s.currentQuantity} <span className='text-teal-600 font-semibold'>{s.unit}</span></td>
-              <td className="px-6 py-4 text-gray-700">{s.maxQuantity}</td>
+              <td className="px-6 py-4 text-gray-700">{s.maxQuantity} <span className='text-teal-600 font-semibold'>{s.unit}</span></td>
               <td className={`px-6 py-4 font-semibold ${s.status === "LOW"
                   ? "text-yellow-600"
                   : s.status === "OK"

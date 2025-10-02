@@ -7,9 +7,12 @@ export async function PATCH(req: Request,{params} : { params: Promise<{id:string
     const { id } = await params
     const orderId = Number(id)
     const {employeeId} = await req.json()
+    if(!employeeId) return NextResponse.json({error:"staff id needed"},{status:400})
+    
     const employee = await prisma.user.findUnique({
       where:{id:employeeId}
     })
+    
     if(!employee){
       return NextResponse.json({error:"not found this employee id in database"},{status:404})
     }

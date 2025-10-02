@@ -61,7 +61,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <div className="bg-white mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">
       <div className="flex justify-between">
-        <h1 className="text-2xl font-bold text-teal-700 border-b border-teal-100 pb-2">Stock item details</h1>
+        <p className="text-2xl font-bold text-teal-700 border-b border-teal-100 pb-2">Refill : <span className="text-black font-semibold">{oldData.name}</span></p>
         <p><span className="font-bold text-teal-700">employeeName : </span>{}</p>
         <p className={`${oldData.status === "LOW"
           ? "text-yellow-600"

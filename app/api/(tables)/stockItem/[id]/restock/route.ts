@@ -6,10 +6,10 @@ export async function PATCH(req:Request, {params} : {params : Promise<{id:string
     const {id:sId} = await params
     const id = Number(sId)
     const body = await req.json()
-    const { newQuantity,employeeId } = body
+    const { newQuantity:SnewQuantity,employeeId } = body
     try{
-        const addValue = Number(newQuantity)
-        if(!addValue){
+        const newQuantity = Number(SnewQuantity)
+        if(!newQuantity){
             return NextResponse.json({error:"new quantity must be a number"},{status:400})
         }
         //ดูว่ามี id ของสตอกและพนักงานที่กำลังหาอยู่จริงป่าว
@@ -23,16 +23,17 @@ export async function PATCH(req:Request, {params} : {params : Promise<{id:string
         }
         
         //เติมสตอกและสร้างประวัติการอัพเดท
-        const totalQuantity = stock.currentQuantity + addValue
+        const totalQuantity = stock.currentQuantity + newQuantity
+        const status = calStockStatus(totalQuantity,stock.maxQuantity)
         const updatedItem = await prisma.stockItem.update({
             where: { id },
             data : {
-                currentQuantity : { increment : addValue},
-                status : calStockStatus(totalQuantity,stock.maxQuantity),
+                status,
+                currentQuantity : { increment : newQuantity},
                 restock : {
                     create : [
                         {
-                            newQuantity:addValue,
+                            newQuantity,
                             oldQuantity:stock.currentQuantity,
                             totalQuantity,
                             employeeId:employee.id

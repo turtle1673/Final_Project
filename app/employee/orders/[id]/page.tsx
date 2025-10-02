@@ -5,6 +5,7 @@ import { use, useEffect, useState } from "react"
 import Image from "next/image"
 import DrinkIngredients from "@/components/DrinkIngredients"
 import formatToThaiDate from "@/lib/functions/formatToThaiDate"
+import OrderButtons from "@/components/OrderButtons"
 
 export default function OrderDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -77,22 +78,7 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
           ราคารวม: <span className="text-black">{order.totalPrice} บาท</span>
         </p>
       </div>
-
-      {/* Action buttons */}
-      <div className="flex gap-4 w-full mt-6 justify-end">
-        <button
-          className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors font-medium shadow-md"
-          onClick={() => alert("Cancel order")}
-        >
-          Cancel Order
-        </button>
-        <button
-          className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors font-medium shadow-md"
-          onClick={() => alert("Complete order")}
-        >
-          Complete Order
-        </button>
-      </div>
+      <OrderButtons orderId={id}/>
     </div>
   )
 }
