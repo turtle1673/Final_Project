@@ -9,7 +9,7 @@ export default async function ManagerAllOrders() {
     return (
         <>
             {/* ฝั่งขวา (Orders List) */}
-            <div className="w-max border p-8 bg-white shadow-inner flex flex-col h-screen">
+            <div className="w-max p-8 bg-white shadow-inner flex flex-col h-screen">
                 <h2 className="text-2xl font-semibold text-teal-700 mb-4">
                     Orders ทั้งหมด
                 </h2>
