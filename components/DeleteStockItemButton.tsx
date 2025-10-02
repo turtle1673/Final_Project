@@ -16,11 +16,13 @@ export default function TitleTestDeleteUserButton({ stockId }: { stockId: string
         alert(json.message)
         router.push("./")
       }catch(err:any){
+        console.log(err.message)
         alert(err.message)
       }
       
     }
 
+    console.log(stockId)
   return (
     <button type="button" onClick={handleDelete} className="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-red-600 transition">
       delete

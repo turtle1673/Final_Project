@@ -86,7 +86,7 @@ model Restock {
 
   employeeId    String
   stockItemId   Int
-  stockItem     StockItem @relation(fields: [stockItemId], references: [id])
+  stockItem     StockItem @relation(fields: [stockItemId], references: [id],onDelete: Cascade)
   employee      User      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 

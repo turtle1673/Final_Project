@@ -53,18 +53,18 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
 }
 
 
-export async function DELETE(_req:Request, {params} : {params : {id:string}}) {
-    const id = Number(params.id)
+export async function DELETE(_req:Request, {params} : {params : Promise<{id:string}>}) {
+    const {id:sId} = await params
+    const id = Number(sId)
     try{
+        const stock = await prisma.stockItem.findUnique({where:{id}})
+        if(!stock) return NextResponse.json({error:"stock item not found"},{status:404})
+        
         const deleteItem = await prisma.stockItem.delete({
             where:{id}
         })
 
-        if(!deleteItem){
-            return NextResponse.json({message:"Delete item failed"},{status:404})
-        }
-
-        return NextResponse.json({message:"Item deleted",item:deleteItem},{status:200})
+        return NextResponse.json({message:"item deleted successfully !",data:deleteItem},{status:200})
     }catch(err:any){
         return NextResponse.json({message:err.message || "An unexpected error occurred"}, { status: 500 })
     }
