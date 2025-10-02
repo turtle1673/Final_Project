@@ -2,6 +2,7 @@ import formatToThaiDate from "@/lib/functions/formatToThaiDate";
 import { Idrink } from "@/types/idrink";
 import Link from "next/link";
 import TitleTestLoading from "./TitleTestLoading";
+import DeleteDrinkButton from "../DeleteDrinkButton";
 
 export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
   if (!drinks) return <TitleTestLoading />
@@ -52,12 +53,7 @@ export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
               <td className="px-6 py-4 text-gray-500">{formatToThaiDate(drink.createAt, "long")}</td>
               <td className="px-6 py-4 text-gray-500">{drink.ingredients.length} อย่าง</td>
               <td className="px-6 py-4 text-right">
-                <Link
-                  href={`drinks-management/${drink.id}`}
-                  className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition"
-                >
-                  Manage
-                </Link>
+                <DeleteDrinkButton drinkId={drink.id} />
               </td>
             </tr>
           ))}

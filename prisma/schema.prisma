@@ -63,7 +63,7 @@ model Order {
 
   employeeId  String?
   drinkId     Int
-  drink       Drink       @relation(fields: [drinkId], references: [id])
+  drink       Drink       @relation(fields: [drinkId], references: [id], onDelete: Cascade)
   employee    User?       @relation(fields: [employeeId], references: [id], onDelete: SetNull )
 }
 
