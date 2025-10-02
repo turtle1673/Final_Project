@@ -1,5 +1,6 @@
 "use client"
 
+import uploadImageFile from '@/lib/functions/imageFunctions/uploadImageFile'
 import { Iitem } from '@/types/item'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -99,6 +100,7 @@ export default function StockDynamicInputField() {
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                required
               />
             </div>
             <div>
@@ -111,6 +113,7 @@ export default function StockDynamicInputField() {
                 value={price}
                 onChange={e => setPrice(e.target.value)}
                 min="0"
+                required
               />
             </div>
           </div>
