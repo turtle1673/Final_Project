@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({data:stockItems}, { status: 200 });
 }
 
+
 export async function POST(req: Request) {
   try{
 
