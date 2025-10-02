@@ -9,7 +9,7 @@ export default function DrinkIngredients({ingredients} : {ingredients:Ingredient
   return (
     <>
     <div className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-md">
-      <p className="text-teal-700 font-semibold mb-2">วัตถุดิบ:</p>
+      <p className="text-teal-700 font-semibold mb-2">วัตถุดิบต่อแก้ว:</p>
       <div className="grid grid-cols-4 gap-2">
         {ingredients.map((ing) => (
           <div

@@ -67,7 +67,7 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
           <p><span className="font-semibold text-teal-700">ประเภท: </span>{order.drinkType}</p>
           <p><span className="font-semibold text-teal-700">ขนาดแก้ว: </span>{order.cupSize}</p>
           <p><span className="font-semibold text-teal-700">ระดับความหวาน: </span>{order.sweetLevel}</p>
-          <p><span className="font-semibold text-teal-700">จำนวน: </span>{order.amount} แก้ว</p>
+          <p className="underline"><span className="font-semibold text-teal-700">จำนวน: </span>{order.amount} แก้ว</p>
         </div>
       </div>
 

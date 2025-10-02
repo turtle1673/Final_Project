@@ -7,6 +7,13 @@ export default async function ManagerNav() {
     <nav className="flex flex-col items-start gap-2 w-1/6 bg-white border-r border-teal-300 h-screen p-4 shadow-md">
       {/* Accounts */}
       <Link
+        href="/manager"
+        className="px-3 py-2 w-full font-semibold text-teal-700 hover:bg-blue-100 rounded-lg transition"
+      >
+        Dashboard
+      </Link>
+      {/* Accounts */}
+      <Link
         href="/manager/accounts-management"
         className="px-3 py-2 w-full font-semibold text-teal-700 hover:bg-blue-100 rounded-lg transition"
       >

@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
 
   const stockItems = await prisma.stockItem.findMany({
     where: category ? { category } : {},
-    orderBy:{id:"asc"}
+    orderBy:{updateAt:"asc"}
   })
 
   return NextResponse.json({data:stockItems}, { status: 200 });
