@@ -1,15 +1,13 @@
 "use client"
 
-import uploadImageFile from '@/lib/functions/imageFunctions/uploadImageFile'
 import { Iitem } from '@/types/item'
 import React, { useEffect, useRef, useState } from 'react'
 
 interface Iings {
-  id:number
-  name:string
-  quantity:string
+  id: number
+  name: string
+  quantity: string
 }
-
 
 export default function StockDynamicInputField() {
   const [ings, setIngs] = useState<Iings[]>([])
@@ -17,6 +15,8 @@ export default function StockDynamicInputField() {
   const [ingredients, setIngredient] = useState<Iitem[]>([])
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
+  const [previewUrl, setPreviewUrl] = useState<string>("")
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
   useEffect(() => {
     const fetchStock = async () => {
@@ -48,13 +48,19 @@ export default function StockDynamicInputField() {
     setIngs(prev => prev.map(ing => ing.id === id ? { ...ing, [field]: value } : ing))
   }
 
-  const handleLog = () => {
-    // Build the log object
-    const logObj = {
-      name: name,
-      price: price ? Number(price) : 0,
-      img: "TestUrl",
-      ings: ings
+  // Handle file selection + preview
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      setPreviewUrl(URL.createObjectURL(file)) // local preview only
+    }
+  }
+
+  const handleSubmit = async () => {
+    try {
+      // Build ingredients array for sending
+      const processedIngs = ings
         .filter(ing => ing.name && ing.quantity)
         .map(ing => {
           const found = ingredients.find(item => item.name === ing.name)
@@ -64,20 +70,67 @@ export default function StockDynamicInputField() {
           }
         })
         .filter(ing => ing.stockItemId !== null)
+
+      // Build payload
+      const payload = {
+        name,
+        price: price ? Number(price) : 0,
+        img: previewUrl || "/IMAGES/smoothielogo.png", // just a preview url or fallback
+        ings: processedIngs
+      }
+
+      console.log("📤 Sending to /api/drink:", payload)
+
+      const res = await fetch("/api/drink", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to create drink")
+
+      console.log("✅ Created drink:", data)
+
+      // Reset form
+      setName("")
+      setPrice("")
+      setIngs([])
+      setImageFile(null)
+      setPreviewUrl("")
+      alert("Drink created successfully!")
+    } catch (error: any) {
+      console.error("Error creating drink:", error)
+      alert(error.message)
     }
-    console.log(logObj)
   }
 
   return (
     <>
-      {/* Image upload remains non-functional */}
-      <form className="max-w-2xl w-full mx-auto bg-white p-8 rounded-xl shadow-lg" onSubmit={e => e.preventDefault()}>
+      <form 
+        className="max-w-2xl w-full mx-auto bg-white p-8 rounded-xl shadow-lg" 
+        onSubmit={e => e.preventDefault()}
+      >
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create New Drink</h2>
         
-        {/* Image Upload Section */}
+        {/* Image Upload Section with preview */}
         <div className="mb-8 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
           <div className="text-gray-400 mb-2">Image Preview</div>
-          <input type="file" name="file" hidden ref={imageInputRef} />
+          {previewUrl && (
+            <img 
+              src={previewUrl} 
+              alt="Preview" 
+              className="mx-auto mb-4 max-h-48 object-contain rounded-lg shadow" 
+            />
+          )}
+          <input 
+            type="file" 
+            name="file" 
+            hidden 
+            accept="image/*"
+            ref={imageInputRef} 
+            onChange={handleFileChange} 
+          />
           <button 
             type="button" 
             onClick={() => imageInputRef.current?.click()} 
@@ -173,7 +226,7 @@ export default function StockDynamicInputField() {
         <button
           type="button"
           className="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-150 hover:shadow-lg"
-          onClick={handleLog}
+          onClick={handleSubmit}
         >
           Create Drink
         </button>
