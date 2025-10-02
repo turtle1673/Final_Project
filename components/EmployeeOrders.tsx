@@ -6,24 +6,24 @@ export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
     <>
         <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
-          <tr>
+          <tr className="text-xl">
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Drink name
+              ชื่อเครื่องดื่ม
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Drink type
+              ประเภทเครื่องดื่ม
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Sweetlevel
+              ระดับความหวาน
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Cup size
+              ขนาดแก้ว
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Amount
+              จำนวน
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Total price
+              ราคารวม
             </th>
             <th scope="col" className="px-6 py-3 text-right font-bold uppercase tracking-wider">
               <></>
@@ -38,7 +38,7 @@ export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
               <td className="px-6 py-4 text-gray-700">{o.sweetLevel}</td>
               <td className="px-6 py-4 text-gray-700">{o.cupSize}</td>
               <td className="px-6 py-4 text-gray-700">{o.amount}</td>
-              <td className="px-6 py-4 text-gray-700">{o.totalPrice}</td>
+              <td className="px-6 py-4 text-gray-700">{o.totalPrice} บาท</td>
               <td className="px-6 py-4 text-right">
                 <Link
                   href={`orders/${o.id}`}

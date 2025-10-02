@@ -9,19 +9,22 @@ export default function EmployeeStock({ stocks }: { stocks: Iitem[] }) {
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
           <tr>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Name
+              ชื่อรายการ
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Category
+              หมวดหมู่
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Current Quantity
+              จำนวนคงเหลือ
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Status
+              จำนวนสูงสุดที่แนะนำ
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Update at
+              สถานะรายการ
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              อัพเดทเมื่อวันที่
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
               <></>
@@ -34,6 +37,7 @@ export default function EmployeeStock({ stocks }: { stocks: Iitem[] }) {
               <td className="px-6 py-4 font-semibold text-teal-600">{s.name}</td>
               <td className="px-6 py-4 text-gray-700">{s.category}</td>
               <td className="px-6 py-4 text-gray-700">{s.currentQuantity} <span className='text-teal-600 font-semibold'>{s.unit}</span></td>
+              <td className="px-6 py-4 text-gray-700">{s.maxQuantity}</td>
               <td className={`px-6 py-4 font-semibold ${s.status === "LOW"
                   ? "text-yellow-600"
                   : s.status === "OK"
@@ -44,7 +48,7 @@ export default function EmployeeStock({ stocks }: { stocks: Iitem[] }) {
               <td className="px-6 py-4 text-right">
                 <Link
                   href={`stocks/${s.id}`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                  className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition"
                 >
                   Refill
                 </Link>

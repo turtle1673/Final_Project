@@ -5,9 +5,10 @@ export async function GET(_req: Request) {
     try {
         const stockItems = await prisma.restock.findMany({
             include: {
-                employee: true
+                employee: true,
+                stockItem:true
             },
-            orderBy: { restockDate: "desc" }
+            orderBy: { createAt: "desc" }
         })
         return NextResponse.json({ data: stockItems }, { status: 200 })
     } catch (err: any) {

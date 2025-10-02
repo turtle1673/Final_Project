@@ -7,12 +7,13 @@ export default function TitleTestDeleteUserButton({ userId }: { userId: string }
      const handleDelete = async () => {
       if (!confirm("ต้องการลบบัญชีนี้หรือไม่")) return
       try{
-        const res = await fetch (`/api/user/${userId}`)
+        const res = await fetch (`/api/user/${userId}`,{method : "DELETE"})
         const json = await res.json()
         if(!res.ok) throw new Error(json.error)    
         alert(json.message)
         router.push("./")
       }catch(err:any){
+        console.log(err.message)
         alert(err.message)
       }
     }

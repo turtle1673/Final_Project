@@ -55,6 +55,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         setSaving(false)
     }
   }
+
   return (
     <div className="w-full h-screen bg-white flex justify-center">
       <div className="bg-white h-fit mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">

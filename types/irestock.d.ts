@@ -1,10 +1,13 @@
+import { Iitem } from "./item"
+import { Iuser } from "./iuser"
+
 export interface Irestock {
-    id:string
+  id:string
   oldQuantity:number
   newQuantity:number
   totalQuantity:number
   createAt:string
 
-  employeeId:string
-  stockItemId:number
+  employee:Iuser
+  stockItem:Iitem
 }

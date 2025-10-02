@@ -28,6 +28,14 @@ export default async function ManagerNav() {
       >
         Stocks
       </Link>
+
+      {/* Restock History */}
+      <Link
+        href="/manager/stock-refill-history"
+        className="px-3 py-2 w-full font-semibold text-teal-700 hover:bg-blue-100 rounded-lg transition"
+      >
+        Stock Refill History
+      </Link>
     </nav>
   );
 }

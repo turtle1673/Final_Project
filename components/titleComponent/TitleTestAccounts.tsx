@@ -9,25 +9,25 @@ export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[
     
       <table className="min-w-full">
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
-          <tr>
+          <tr className="text-xl">
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Name
+              ชื่อพนักงาน
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Email
+              อีเมล
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Position
+              ตำแหน่ง
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Lastest Update
+              อัพเดทเมื่อวันที่
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Create Date
+              วันที่เข้าร่วม
             </th>
             <th scope="col" className="px-6 py-3 text-right font-bold uppercase tracking-wider">
-              <Link href={"accounts-management/create-employee-account"} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                Add new account
+              <Link href={"accounts-management/create-employee-account"} className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">
+                เพิ่มบัญชีพนักงาน
               </Link>
             </th>
           </tr>
@@ -43,7 +43,7 @@ export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[
               <td className="px-6 py-4 text-right">
                 <Link
                   href={`accounts-management/${emp.id}`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                  className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition"
                 >
                   Manage
                 </Link>

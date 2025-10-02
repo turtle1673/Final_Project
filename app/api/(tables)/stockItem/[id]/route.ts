@@ -26,7 +26,9 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
         const {id} = params
         const stockId = Number(id)
         const body = await req.json()
-        const {name,maxQuantity,unit,category,img} = body
+        const {name,maxQuantity:stringMaxQ,unit,category} = body
+        const maxQuantity = Number(stringMaxQ)
+        if(!maxQuantity) return NextResponse.json({error:"maxQuantity must be a number"},{status:400})
         //ดูว่ามีสตอกไอดีที่กำลังหาอยู่จริงป่าว
         const stock = await prisma.stockItem.findUnique({where:{id:stockId}})
         if(!stock){
@@ -40,7 +42,6 @@ export async function PATCH(req:Request, {params} : {params : {id:string}}) {
                 maxQuantity:maxQuantity || stock.maxQuantity,
                 unit:unit || stock.unit,
                 category:category || stock.category,
-                img,
                 status:maxQuantity? calStockStatus(stock.currentQuantity,maxQuantity) : stock.status
             }
         })

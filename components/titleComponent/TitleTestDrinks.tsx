@@ -10,23 +10,23 @@ export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
       <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
           <tr>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              image
+              รูปเครื่องดื่ม
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Name
+              ชื่อเครื่องดื่ม
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Price
+              ราคาขาย
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Lastest Update
+              อัพเดทเมื่อวันที่
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Create Date
+              วันที่สร้าง
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              <Link href="drinks-management/create-drink" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                Add a new drink
+              <Link href="drinks-management/create-drink" className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">
+                เพิ่มเมนู
               </Link>
             </th>
           </tr>
@@ -42,7 +42,7 @@ export default function TitleTestDrinks({ drinks }: { drinks: Idrink[] }) {
               <td className="px-6 py-4 text-right">
                 <Link
                   href={`drinks-management/${drink.id}`}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                  className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition"
                 >
                   Manage
                 </Link>

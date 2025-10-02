@@ -48,6 +48,7 @@ model StockItem {
   restock         Restock[]
 }
 
+//relation
 model Order {
   id          Int         @id @default(autoincrement())
   addon       Int?
@@ -63,7 +64,7 @@ model Order {
   employeeId  String?
   drinkId     Int
   drink       Drink       @relation(fields: [drinkId], references: [id])
-  employee    User?       @relation(fields: [employeeId], references: [id], onDelete:SetNull )
+  employee    User?       @relation(fields: [employeeId], references: [id], onDelete: SetNull )
 }
 
 model Ingredient {
@@ -85,8 +86,8 @@ model Restock {
 
   employeeId    String
   stockItemId   Int
-  employee      User      @relation(fields: [employeeId], references: [id])
   stockItem     StockItem @relation(fields: [stockItemId], references: [id])
+  employee      User      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 enum userRole {

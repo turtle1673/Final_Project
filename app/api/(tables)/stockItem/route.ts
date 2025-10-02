@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   try{
 
     const body = await req.json()
-    const {name,category,maxQuantity,unit,img} = body
+    const {name,category,maxQuantity,unit} = body
     
     const number = Number(maxQuantity)
     if(!number){
@@ -30,7 +30,6 @@ export async function POST(req: Request) {
         category,
         maxQuantity:number,
         unit,
-        img,
       }
     })
 
