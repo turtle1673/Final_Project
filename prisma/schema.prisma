@@ -63,7 +63,7 @@ model Order {
   employeeId  String?
   drinkId     Int
   drink       Drink       @relation(fields: [drinkId], references: [id])
-  employee    User?       @relation(fields: [employeeId], references: [id])
+  employee    User?       @relation(fields: [employeeId], references: [id], onDelete:SetNull )
 }
 
 model Ingredient {
@@ -81,7 +81,7 @@ model Restock {
   oldQuantity   Int
   newQuantity   Int
   totalQuantity Int
-  restockDate   DateTime  @default(now())
+  createAt   DateTime  @default(now())
 
   employeeId    String
   stockItemId   Int

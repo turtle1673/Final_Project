@@ -6,7 +6,7 @@ declare module "next-auth" {
       id: string
       role: string
       name?: string | null
-      email?: string | null
+      email: string
     }
   }
 
@@ -14,6 +14,6 @@ declare module "next-auth" {
     id: string
     role: string
     name?: string | null
-    email?: string | null
+    email: string
   }
 }

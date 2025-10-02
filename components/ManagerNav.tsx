@@ -4,7 +4,7 @@ import Link from "next/link";
 export default async function ManagerNav() {
 
   return (
-    <nav className="flex flex-col items-start gap-2 w-1/6 bg-white border-r border-teal-300 min-h-screen p-4 shadow-md">
+    <nav className="flex flex-col items-start gap-2 w-1/6 bg-white border-r border-teal-300 h-screen p-4 shadow-md">
       {/* Accounts */}
       <Link
         href="/manager/accounts-management"

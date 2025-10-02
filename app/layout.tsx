@@ -18,12 +18,12 @@ export default function RootLayout({
     <html lang="en">
       <ClientSessionProvider>
         <body>
-          <main className="bg-amber-50 text-black min-h-screen">
+          <main className="container w-full bg-amber-50 h-screen text-black">
             <TitleTestNav />
             {children}
           </main>
         </body>
       </ClientSessionProvider>
     </html>
-  );
+  )
 }

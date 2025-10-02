@@ -15,7 +15,7 @@ export default async function DrinksManagement() {
   return (
     <>
       <header className="uppercase text-blue-900 text-3xl font-bold my-10">เมนู เครื่องดื่มปัจจุบัน</header>
-      <TitleTestDrinks drinks={drinks} />
+      {/* <TitleTestDrinks drinks={drinks} /> */}
     </>
   )
 }

@@ -2,9 +2,12 @@
 
 export default async function homepage() {
 console.log("hello world")
+
   return (
     <>
-    <p>Hello</p>
+     <div className="bg-red-500">
+      hello world
+     </div>
     </>
   )
 }

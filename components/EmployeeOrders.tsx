@@ -1,57 +1,56 @@
-import formatToThaiDate from "@/lib/functions/formatToThaiDate";
-import { Iuser } from "@/types/iuser";
+import { Iorder } from "@/types/iorders";
 import Link from "next/link";
 
-export default async function TitleTestAccounts({ accounts }: { accounts: Iuser[] }) {
-
+export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
   return (
     <>
-    
-      <table className="min-w-full">
+        <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gradient-to-r from-teal-400 to-blue-400 text-white">
           <tr>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Name
+              Drink name
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Email
+              Drink type
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Position
+              Sweetlevel
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Lastest Update
+              Cup size
             </th>
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
-              Create Date
+              Amount
+            </th>
+            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              Total price
             </th>
             <th scope="col" className="px-6 py-3 text-right font-bold uppercase tracking-wider">
-              <Link href={"accounts-management/create-employee-account"} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                Add new account
-              </Link>
+              <></>
             </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-100">
-          {accounts.map(emp => (
-            <tr key={emp.id} className="hover:bg-blue-50 transition">
-              <td className="px-6 py-4 font-semibold text-teal-600">{emp.name}</td>
-              <td className="px-6 py-4 text-gray-700">{emp.email}</td>
-              <td className="px-6 py-4 text-teal-600 font-semibold">{emp.role}</td>
-              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.updateAt)}</td>
-              <td className="px-6 py-4 text-gray-500">{formatToThaiDate(emp.createAt,"long")}</td>
+          {orders.map(o => (
+            <tr key={o.id} className="hover:bg-blue-50 transition">
+              <td className="px-6 py-4 font-semibold text-teal-600">{o.drink.name}</td>
+              <td className="px-6 py-4 text-gray-700">{o.drinkType}</td>
+              <td className="px-6 py-4 text-gray-700">{o.sweetLevel}</td>
+              <td className="px-6 py-4 text-gray-700">{o.cupSize}</td>
+              <td className="px-6 py-4 text-gray-700">{o.amount}</td>
+              <td className="px-6 py-4 text-gray-700">{o.totalPrice}</td>
               <td className="px-6 py-4 text-right">
                 <Link
-                  href={`accounts-management/${emp.id}`}
+                  href={`orders/${o.id}`}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
                 >
-                  Manage
+                  Order details
                 </Link>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-  </>
+    </>
   )
 }

@@ -1,8 +1,15 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_req: Request) {
-  const stockItems = await prisma.stockItem.findMany({orderBy : {id : "desc"}})
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams
+  const category = searchParams.get("category")
+
+  const stockItems = await prisma.stockItem.findMany({
+    where: category ? { category } : {},
+    orderBy:{id:"asc"}
+  })
+
   return NextResponse.json({data:stockItems}, { status: 200 });
 }
 

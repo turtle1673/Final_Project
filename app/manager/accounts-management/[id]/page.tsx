@@ -49,14 +49,15 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         setSubmit(prev => !prev)
         setEdit(false)
       } catch (err: any) {
+        alert(err.message)
         setError(err.message)
       }finally {
         setSaving(false)
     }
   }
-
   return (
-    <div className="bg-white mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">
+    <div className="w-full h-screen bg-white flex justify-center">
+      <div className="bg-white h-fit mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold text-teal-700 border-b border-teal-100 pb-2">Employee Detail</h1>
         <button onClick={() => setEdit(prev => !prev)} className={`flex items-center gap-2 border-2 border-teal-600 text-teal-600 p-2 rounded-xl ${edit ? "bg-teal-600 text-white" : ""}`}>
@@ -108,6 +109,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       </form>
 
       {error && <p className="m-4 w-fit bg-red-500 py-1 px-4 text-white text-md rounded-2xl">{error}</p>}
+    </div>
     </div>
   )
 }

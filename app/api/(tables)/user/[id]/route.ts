@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(_req: Request,{ params }: { params: { id: string } }) {
-  const {id} = params
+export async function GET(_req: Request,{ params }: { params: Promise<{ id: string }> }) {
+  const {id} = await params
  
   const user = await prisma.user.findUnique({where: { id }})
 
@@ -40,14 +40,15 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(_req: Request,{ params }: { params: { id: string } }) {
+export async function DELETE(_req: Request,{ params }: { params: Promise<{ id: string }> }) {
   try {
-    const id = params.id;
+    const {id} = await params
     const user = await prisma.user.findUnique({where: { id }})
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+
     if(user.email === process.env.NEXT_PUBLIC_SEED_EMAIL){
       return NextResponse.json({error:"Can not delete seed user"},{status:400})
     }

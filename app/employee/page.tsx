@@ -1,7 +1,12 @@
-import React from 'react'
+import EmployeeDetails from "@/components/EmployeeDetails"
 
-export default function employee() {
+
+export default function EmployeePage() {
+  
   return (
-    <div>order list</div>
+    <>
+    <div>hello employee</div>
+    <EmployeeDetails/>
+    </>
   )
 }

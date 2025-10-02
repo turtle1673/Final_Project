@@ -2,9 +2,10 @@ import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 
-export async function GET(_req:Request,context:{params : {id : string}}){
+export async function GET(_req:Request,{params} : {params : Promise<{id : string}>}){
     try{
-        const id = Number(context.params.id)
+        const {id:sId} = await params
+        const id = Number(sId)
         const drink = await prisma.drink.findUnique({
             where : {id},
             include : {ingredients : {include : {stockItem : true}}}

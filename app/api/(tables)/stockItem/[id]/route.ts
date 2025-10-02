@@ -2,8 +2,9 @@ import calStockStatus from "@/lib/functions/calStockStatus"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export async function GET(_req:Request,{params} : {params : {id:string}}) {
-    const id = Number(params.id)
+export async function GET(_req:Request,{params} : {params : Promise<{id:string}>}) {
+    const {id:stringId} = await params
+    const id = Number(stringId)
     try{
         const item = await prisma.stockItem.findUnique({
             where: { id }

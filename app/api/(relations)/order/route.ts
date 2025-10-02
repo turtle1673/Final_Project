@@ -5,9 +5,10 @@ export async function GET(_req: Request) {
     try {
         const orders = await prisma.order.findMany({
             where: { orderStatus: "PENDING" },
-            orderBy : { id : "asc" }
+            orderBy : { createAt : "asc" },
+            include : {drink : true}
         })
-        return NextResponse.json(orders, { status: 200 })
+        return NextResponse.json({data:orders}, { status: 200 })
     }catch (err: any) {
         return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 })
     }
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const { drinkId, cupSize, sweetLevel, addon, drinkType, amount, totalPrice} = body
+        // const addon = Number(Saddon)
+        // const amount = Number(Samount)
+
+        // if(!addon || !amount) return NextResponse.json({error:"Input type error"},{status:400})
 
         const drink = await prisma.drink.findUnique({
             where:{id:drinkId}

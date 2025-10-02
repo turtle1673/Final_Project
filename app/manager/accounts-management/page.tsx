@@ -11,10 +11,7 @@ export default async function page() {
 
   return (
   <>
-    <header className="uppercase text-blue-900 text-3xl font-bold my-10">Manager accounts management</header>
-    <div className="overflow-x-auto min-w-md rounded-lg shadow-lg bg-white p-6">
       <TitleTestAccounts accounts={users}/>
-    </div>
   </>
   )
 }

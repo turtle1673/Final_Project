@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { completeOrder } from "@/lib/functions/completeOrder";
 
-export async function PATCH(req: Request,context : { params: { id: string } }) {
+export async function PATCH(req: Request,{params} : { params: Promise<{id:string}> }) {
   try {
-    const { id } = context.params
+    const { id } = await params
     const orderId = Number(id)
     const {employeeId} = await req.json()
     const employee = await prisma.user.findUnique({

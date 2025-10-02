@@ -34,7 +34,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSaving(true)
-    // try {
+    try {
         const formData = new FormData(e.currentTarget)
         const name = formData.get("name")
         const maxQuantity = formData.get("maxQuantity")
@@ -44,21 +44,22 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         const body = {name,maxQuantity,unit,category}
         console.log(body)
         
-    //     const res = await fetch(`/api/user/${id}`, {
-    //       method: "PATCH",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(body),
-    //     })
+        const res = await fetch(`/api/stockItem/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        })
 
-    //     const json = await res.json()
-    //     if (!res.ok) throw new Error(json.error)
-    //     setSubmit(prev => !prev)
-    //     setEdit(false)
-    //   } catch (err: any) {
-    //     setError(err.message)
-    //   }finally {
-    //     setSaving(false)
-    // }
+        const json = await res.json()
+        if (!res.ok) throw new Error(json.error)
+        alert(json.message)
+        setSubmit(prev => !prev)
+        setEdit(false)
+      } catch (err: any) {
+        setError(err.message)
+      }finally {
+        setSaving(false)
+    }
     setSaving(false)
   }
 
@@ -93,18 +94,21 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
       <form onSubmit={handleSubmit} className="flex justify-between gap-6 mt-4">
         <div className="flex flex-col gap-4 flex-1">
+          <p className="font-bold text-teal-700">ชื่อ</p>
           <input
             type="text" defaultValue={oldData.name}
             name="name"
             readOnly={!edit}
             className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50"
           />
+          <p className="font-bold text-teal-700">จำนวนสูงสุด</p>
           <input
             type="text" defaultValue={oldData.maxQuantity}
             name="maxQuantity"
             readOnly={!edit}
             className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50"
           />
+          <p className="font-bold text-teal-700">หน่วย</p>
           <select
             defaultValue={oldData.unit}
             name="unit"
@@ -114,7 +118,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
             <option value="g">g</option>
             <option value="ml">ml</option>
           </select>
-
+          <p className="font-bold text-teal-700">หมวดหมู่</p>
           <select
             defaultValue={oldData.category}
             name="category"

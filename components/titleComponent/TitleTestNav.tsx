@@ -1,32 +1,49 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+"use client"
+
 import Link from "next/link"
-import TitleTestNavRole from "./TitleTestNavRole"
+import { useSession } from "next-auth/react"
+import SignOutButton from "../SignOutButton"
 
 const navItems = [
-  { name: 'page', href: '/'},
-  { name: 'customer', href: '/customer'},
-  { name: 'employee', href: '/employee'},
-  { name: 'manager', href: '/manager'},
+  // { name: "page", href: "/" },
+  { name: "menu", href: "/drinks-menu" },
+  { name: "employee", href: "/employee" },
+  { name: "manager", href: "/manager" },
 ]
 
-export default async function TitleTestNav() {
-  const session = await getServerSession(authOptions)
-  if(session){
-    console.log("now you have a session")
-  }
+export default function TitleTestNav() {
+  const { data: session,status } = useSession()
+  if(status === "loading") return <p className="flex items-center text-teal-600 text-2xl font-bold justify-center h-20 w-full bg-white border-b border-teal-200 shadow-sm animate-pulse">loading...</p>
   return (
-    <>
-    <nav className="flex justify-between px-16 h-20 w-full bg-blue-900 text-white items-center">
-      <div className="flex gap-4 text-2xl">
-      {navItems.map((e) => {
-        return (
-          <Link className="hover:underline" key={e.name} href={e.href}>{e.name}</Link>
-        )
-      })}
+    <nav className="flex justify-between px-16 h-20 w-full bg-white border-b border-teal-200 items-center shadow-sm">
+      <div className="flex gap-6 text-lg font-medium text-gray-700">
+        {navItems.map((e) => (
+          <Link
+            key={e.name}
+            href={e.href}
+            className="hover:text-teal-600 transition-colors"
+          >
+            {e.name}
+          </Link>
+        ))}
       </div>
-        <TitleTestNavRole/>
-      </nav>
-    </>
-    )
+
+      {session ? (
+        <div className="flex items-center gap-6">
+          <div className="text-right">
+            <p className="text-gray-800 font-semibold">{session.user.name}</p>
+            <p className="text-sm text-gray-500">{session.user.role}</p>
+          </div>
+          <SignOutButton />
+        </div>
+      ) : (
+        <Link
+          href="/login"
+          className="px-4 py-2 rounded-lg border border-teal-300 text-gray-700 hover:bg-gray-100 transition-colors"
+        >
+          Staff
+        </Link>
+      )}
+    </nav>
+  )
 }

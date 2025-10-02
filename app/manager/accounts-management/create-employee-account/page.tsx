@@ -1,13 +1,17 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function CreateEmployee() {
   const [role, setRole] = useState("EMPLOYEE")
+  const [pending, setPending] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try{
+      setPending(true)
       const formData = new FormData(e.currentTarget)
       const name = formData.get("name")
       const email = formData.get("email")
@@ -24,6 +28,7 @@ export default function CreateEmployee() {
         throw new Error(json.error)
       }
       alert(json.message)
+      router.push("./")
     }catch(err:any){
       alert(err.message)
       console.log(err)
@@ -100,7 +105,7 @@ export default function CreateEmployee() {
           type="submit"
           className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
         >
-          Submit
+          {pending ? <p>Creating...</p> : <p>Create</p> }
         </button>
       </form>
   )
