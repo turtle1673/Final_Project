@@ -54,23 +54,23 @@ export default function ManagerOrdersStats() {
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 col-span-2">
         <div className="p-4 bg-white shadow rounded">
-          <h2 className="text-sm text-gray-500">จำนวนคำสั่งซื้อวันนี้</h2>
+          <h2 className="text-sm text-teal-500">จำนวนคำสั่งซื้อวันนี้</h2>
           <p className="text-2xl font-bold">{stats.orderThisDay}</p>
         </div>
         <div className="p-4 bg-white shadow rounded">
-          <h2 className="text-sm text-gray-500">จำนวนคำสั่งซื้อเดือนนี้</h2>
+          <h2 className="text-sm text-teal-500">จำนวนคำสั่งซื้อเดือนนี้</h2>
           <p className="text-2xl font-bold">{stats.orderThisMonth}</p>
         </div>
         <div className="p-4 bg-white shadow rounded">
-          <h2 className="text-sm text-gray-500">ยอดขายของวันนี้</h2>
+          <h2 className="text-sm text-teal-500">ยอดขายของวันนี้</h2>
           <p className="text-2xl font-bold">{stats.revenueThisDay} บาท</p>
         </div>
         <div className="p-4 bg-white shadow rounded">
-          <h2 className="text-sm text-gray-500">ยอดขายของเดือนนี้</h2>
+          <h2 className="text-sm text-teal-500">ยอดขายของเดือนนี้</h2>
           <p className="text-2xl font-bold">{stats.revenueThisMonth} บาท</p>
         </div>
         <div className="p-4 bg-white shadow rounded">
-          <h2 className="text-sm text-gray-500">ราคาเฉลี่ย</h2>
+          <h2 className="text-sm text-teal-500">ราคาเฉลี่ย</h2>
           <p className="text-2xl font-bold">{stats.avgOrderValue} บาท</p>
         </div>
       </div>
