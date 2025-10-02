@@ -43,7 +43,7 @@ export default function ManagerOrdersStats() {
       {
         label: "# of Orders",
         data: stats.orderByStatus.map((s) => s._count._all),
-        backgroundColor: ["#facc15 ", "#ef4444", "#16a34a"], // PENDING, COMPLETED, CANCELLED
+        backgroundColor: ["#ef4444", "#16a34a ", "#facc15 "], // PENDING, COMPLETED, CANCELLED
         borderWidth: 1,
       },
     ],
