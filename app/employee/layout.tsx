@@ -5,7 +5,7 @@ export default function LayoutEmployee({ children }: { children: React.ReactNode
     <>
       <main className="flex w-full bg-amber-300 text-black min-h-full">
         <EmployeeNav />
-        <div className="flex w-full flex-col items-center bg-amber-50 h-screen">
+        <div className="flex w-full flex-col items-center bg-white h-screen">
           {children}
         </div>
       </main>

@@ -2,6 +2,7 @@ import { Iorder } from "@/types/iorders";
 import Link from "next/link";
 
 export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
+  if(orders.length === 0) return <p className="text-center">ไม่มีรายการคำสั่งซื้อ</p>
   return (
     <>
         <table className="min-w-full divide-y divide-gray-200">
