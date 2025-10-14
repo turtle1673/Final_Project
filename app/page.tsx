@@ -5,9 +5,7 @@ console.log("hello world")
 
   return (
     <>
-     <div className="bg-red-500">
-      hello world
-     </div>
+     
     </>
   )
 }

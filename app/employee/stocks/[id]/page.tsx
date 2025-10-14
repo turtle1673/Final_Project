@@ -6,14 +6,14 @@ import { useRouter } from "next/navigation"
 import { use, useEffect, useState } from "react"
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const {data:session} = useSession()
+  const { data: session } = useSession()
   const { id } = use(params)
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
   const [oldData, setOldData] = useState<Iitem | null>(null)
-  
+
   useEffect(() => {
     const fetchStock = async () => {
       try {
@@ -39,7 +39,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       const formData = new FormData(e.currentTarget)
       const newQuantity = formData.get("newQuantity")
       console.log(employeeId)
-      const body = { newQuantity, employeeId}
+      const body = { newQuantity, employeeId }
 
       const res = await fetch(`/api/stockItem/${id}/restock`, {
         method: "PATCH",
@@ -53,6 +53,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       alert(json.message)
       router.push("./")
     } catch (err: any) {
+      setSaving(false)
       console.log(err)
       setError(err.message)
     }
@@ -62,7 +63,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     <div className="bg-white mt-16 w-5xl border border-teal-200 rounded-lg p-6 shadow-md">
       <div className="flex justify-between">
         <p className="text-2xl font-bold text-teal-700 border-b border-teal-100 pb-2">Refill : <span className="text-black font-semibold">{oldData.name}</span></p>
-        <p><span className="font-bold text-teal-700">employeeName : </span>{}</p>
+        <p><span className="font-bold text-teal-700">employeeName : </span>{session?.user.name}</p>
         <p className={`${oldData.status === "LOW"
           ? "text-yellow-600"
           : oldData.status === "OK"
@@ -74,26 +75,44 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       <form onSubmit={handleSubmit} className="flex justify-between gap-6 mt-4">
         <div className="flex flex-col gap-4 flex-1">
           <p className="font-bold text-teal-700">จำนวนที่ต้องการเพิ่ม</p>
-          <input
-            type="text"
-            name="newQuantity"
-            required
-            className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50"
-          />
+          <div className="relative w-full">
+            <input
+              type="text"
+              name="newQuantity"
+              required
+              className="w-full px-3 py-2 pr-10 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50 text-left"
+            />
+            <span className="absolute font-bold inset-y-0 right-3 flex items-center text-gray-500 text-sm">
+              {oldData.unit}
+            </span>
+          </div>
           <p className="font-bold text-teal-700">จำนวนคงเหลือ</p>
-          <input
-            type="text" defaultValue={oldData.currentQuantity}
-            name="maxQuantity"
-            readOnly
-            className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50 text-gray-700"
-          />
+
+          <div className="relative w-full">
+            <input
+              type="text"
+              defaultValue={oldData.currentQuantity}
+              readOnly
+              className="w-full px-3 py-2 pr-10 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50 text-left"
+            />
+            <span className="absolute font-bold inset-y-0 right-3 flex items-center text-gray-500 text-sm">
+              {oldData.unit}
+            </span>
+          </div>
+
           <p className="font-bold text-teal-700">จำนวนสูงสุด</p>
-          <input
-            type="text" defaultValue={oldData.maxQuantity}
-            name="maxQuantity"
-            readOnly
-            className="w-full px-3 py-2 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50 text-gray-700"
-          />
+          <div className="relative w-full">
+            <input
+              type="text"
+              defaultValue={oldData.maxQuantity}
+              readOnly
+              className="w-full px-3 py-2 pr-10 border border-teal-300 rounded-md focus:outline-none read-only:bg-gray-50 text-left"
+            />
+            <span className="absolute font-bold inset-y-0 right-3 flex items-center text-gray-500 text-sm">
+              {oldData.unit}
+            </span>
+          </div>
+
         </div>
 
         <div className="flex flex-col gap-4 w-1/5 items-end">

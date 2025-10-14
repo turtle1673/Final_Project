@@ -1,4 +1,6 @@
+import deleteImageByUrl from "@/lib/functions/imageFunctions/deleteImageByUrl"
 import prisma from "@/lib/prisma"
+import supabase from "@/lib/supabase"
 import { NextResponse } from "next/server"
 
 
@@ -50,6 +52,9 @@ export async function DELETE(_req:Request,{params}: {params: {id: string}}) {
             include : {ingredients : true}
         })
         
+        const imgPath = deletedDrink.img
+        if(imgPath) await deleteImageByUrl(imgPath)
+
         return NextResponse.json(({ message: "Drink deleted!", data: deletedDrink }), { status: 200 })
     } catch (err: any) {
         return NextResponse.json(({ error: err.message || "An unexpected error occurred" }), { status: 500 }

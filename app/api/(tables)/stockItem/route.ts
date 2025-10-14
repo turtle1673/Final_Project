@@ -4,10 +4,21 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
   const category = searchParams.get("category")
+  const exclude = searchParams.get("exclude")
+
+  const where: any = {}
+
+  if (category) {
+    where.category = category
+  }
+
+  if (exclude) {
+    where.category = { not: exclude }
+  }
 
   const stockItems = await prisma.stockItem.findMany({
-    where: category ? { category } : {},
-    orderBy:{updateAt:"asc"}
+    where,
+    orderBy:{updateAt:"desc"}
   })
 
   return NextResponse.json({data:stockItems}, { status: 200 });

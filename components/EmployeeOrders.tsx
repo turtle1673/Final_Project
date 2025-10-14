@@ -17,9 +17,9 @@ export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
               ระดับความหวาน
             </th>
-            <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+            {/* <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
               ขนาดแก้ว
-            </th>
+            </th> */}
             <th scope="col" className="px-6 py-3 text-left font-bold uppercase tracking-wider">
               จำนวน
             </th>
@@ -37,7 +37,7 @@ export default function EmployeeOrders({orders} : {orders : Iorder[]}) {
               <td className="px-6 py-4 font-semibold text-teal-600">{o.drink.name}</td>
               <td className="px-6 py-4 text-gray-700">{o.drinkType}</td>
               <td className="px-6 py-4 text-gray-700">{o.sweetLevel}</td>
-              <td className="px-6 py-4 text-gray-700">{o.cupSize}</td>
+              {/* <td className="px-6 py-4 text-gray-700">{o.cupSize}</td> */}
               <td className="px-6 py-4 text-gray-700">{o.amount}</td>
               <td className="px-6 py-4 text-gray-700">{o.totalPrice} บาท</td>
               <td className="px-6 py-4 text-right">

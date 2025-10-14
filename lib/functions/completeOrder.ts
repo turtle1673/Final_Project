@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import calStockStatus from "./calStockStatus";
+import { calSweetenIngredient } from "./calSweetenIngredient";
 
 export async function completeOrder(orderId: number, employeeId: string) {
   try{
@@ -25,9 +26,20 @@ export async function completeOrder(orderId: number, employeeId: string) {
     if (order.orderStatus === "COMPLETED") {
       throw new Error("Order is already completed")
     }
+
     //ตัดสตอกตามสูตรใน ingredients
     for(const ing of order.drink.ingredients) {
-      const totalUsed = ing.quantity * order.amount
+      let totalUsed:number = 0
+      //ตรวจว่าเป็นวัตถุดิบเพิ่มความหวานหรือไม่ ใช่:ให้เช็กว่าความหวานออร์เดอร์นี้เท่าไหร่ ไม่ใช่:ตัดสตอกตามปกติ
+      if(ing.stockItem.category === "sweeten ingredient") {
+        totalUsed = calSweetenIngredient(ing.quantity, order.sweetLevel) * order.amount
+      }else{
+        totalUsed = Number(ing.quantity * order.amount)
+      }
+      if(totalUsed === null || totalUsed === undefined) {
+        throw new Error("totalUsed is null or undefined")
+      }
+
       if(totalUsed > ing.stockItem.currentQuantity) {
         throw new Error(`Insufficient stock for ingredient: ${ing.stockItem.name}`)
       }

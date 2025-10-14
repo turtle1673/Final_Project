@@ -1,11 +1,13 @@
+import formatToThaiDate from '@/lib/functions/formatToThaiDate'
 import { Iorder } from '@/types/iorders'
 import React from 'react'
 
 export default async function ManagerAllOrders() {
-    const baseUrl = process.env.PUBLIC_BASE_URL
-    const res = await fetch(`${baseUrl}/api/order`, { cache: "no-store" })
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    const res = await fetch(`${baseUrl}/api/order?sorted=desc`, { cache: "no-store" })
     const json = await res.json()
     const orders: Iorder[] = json.data
+    if(!orders) return <p>loading...</p>
     return (
         <>
             {/* ฝั่งขวา (Orders List) */}
@@ -22,7 +24,7 @@ export default async function ManagerAllOrders() {
                         >
                             <div>
                                 <p className="text-sm">
-                                    <strong>ID:</strong> {o.id}
+                                    <strong>วันที่ :</strong> {formatToThaiDate(o.createAt)}
                                 </p>
                                 <p className="text-sm">
                                     <strong>Drink:</strong> {o.drinkType} | {o.amount} แก้ว | {o.totalPrice} ฿

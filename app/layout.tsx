@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <ClientSessionProvider>
         <body>
-          <main className="w-full bg-white h-screen text-black">
+          <main className="w-full bg-white min-h-screen text-black">
             <TitleTestNav />
             {children}
           </main>

@@ -1,4 +1,3 @@
-import uploadImageFile from "@/lib/functions/imageFunctions/uploadImageFile"
 import prisma from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
@@ -17,16 +16,10 @@ export async function GET(_req: Request) {
 
 
 export async function POST(req: Request) {
-    const body = await req.json()
-    const {name,price,img,ings} = body
     try{
-        // const formData = await req.formData()
-        // const name = formData.get("name") as string
-        // const price = formData.get("price") as string
-        // const file = formData.get("file") as File
-        // const ingsRaw = formData.get("ings") as string
-        // const ings = JSON.parse(ingsRaw)
-        
+        const body = await req.json()
+        const {name,price,img,ings} = body
+        if(!img) return NextResponse.json({error:"need image url"},{status:400})
         if(!parseFloat(price)){
             return NextResponse.json({error:"price must be number"},{status : 400})
         }

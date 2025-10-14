@@ -12,7 +12,7 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
   const [amount, setAmount] = useState<number>(1)
   const [totalPrice, setTotalPrice] = useState<number>(drink.price)
   const [sweetLevel, setSweetLevel] = useState("NORMAL_SUGAR")
-  const [cupSize, setCupSize] = useState("MEDIUM")
+  // const [cupSize, setCupSize] = useState("MEDIUM")
   const [drinkType, setDrinkType] = useState("COLD")
   const [addonId, setAddonId] = useState<string>("")
 
@@ -34,8 +34,8 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
 
   // อัพเดท total price
   useEffect(() => {
-    setTotalPrice((drink.price * amount) + ((addonId ? 5 : 0) * amount))
-  }, [amount, addonId, drink])
+    setTotalPrice((drink.price * amount) + ((addonId ? 5 : 0) * amount) + ((drinkType === "HOT" ? 15 : drinkType === "MIXED" ? 10 : 0) * amount))
+  }, [amount, addonId, drink, drinkType])
 
   if (!addons) return <p>Loading...</p>
 
@@ -45,7 +45,7 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
         setPending(true)
         const addon = Number(addonId)
         const drinkId = drink.id
-        const body = { cupSize, sweetLevel, drinkType, addon, amount, totalPrice, drinkId}
+        const body = {sweetLevel, drinkType, addon, amount, totalPrice, drinkId}
         const res = await fetch("/api/order",{
             method:"POST",
             headers: {"Content-Type": "application/json"},
@@ -70,7 +70,7 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
       className="bg-white rounded-xl shadow-md p-6 space-y-4 max-w-md mx-auto border border-teal-200"
     >
       {/* ขนาดแก้ว */}
-      <div>
+      {/* <div>
         <label className="block text-teal-700 font-medium mb-1">ขนาดแก้ว</label>
         <select
           value={cupSize}
@@ -81,7 +81,7 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
           <option value="MEDIUM">กลาง</option>
           <option value="LARGE">ใหญ่</option>
         </select>
-      </div>
+      </div> */}
 
       {/* ความหวาน */}
       <div>
@@ -94,7 +94,6 @@ export default function CustomDrinkForm({ drink }: { drink: Idrink }) {
           <option value="NO_SUGAR">ไม่หวาน</option>
           <option value="LESS_SUGAR">หวานน้อย</option>
           <option value="NORMAL_SUGAR">ปกติ</option>
-          <option value="MORE_SUGAR">หวานมาก</option>
         </select>
       </div>
 

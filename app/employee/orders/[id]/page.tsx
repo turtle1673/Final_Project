@@ -65,14 +65,14 @@ export default function OrderDetails({ params }: { params: Promise<{ id: string 
         <div className="flex flex-col gap-2 text-gray-700">
           <p><span className="font-semibold text-teal-700">เครื่องดื่ม: </span>{order.drink.name}</p>
           <p><span className="font-semibold text-teal-700">ประเภท: </span>{order.drinkType}</p>
-          <p><span className="font-semibold text-teal-700">ขนาดแก้ว: </span>{order.cupSize}</p>
+          {/* <p><span className="font-semibold text-teal-700">ขนาดแก้ว: </span>{order.cupSize}</p> */}
           <p><span className="font-semibold text-teal-700">ระดับความหวาน: </span>{order.sweetLevel}</p>
           <p className="underline"><span className="font-semibold text-teal-700">จำนวน: </span>{order.amount} แก้ว</p>
         </div>
       </div>
 
       {/* Total Price */}
-        <DrinkIngredients ingredients={order.drink.ingredients} />
+        <DrinkIngredients sweetness={order.sweetLevel} ingredients={order.drink.ingredients} />
       <div className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-md text-end">
         <p className="text-lg font-bold text-teal-700">
           ราคารวม: <span className="text-black">{order.totalPrice} บาท</span>

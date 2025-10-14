@@ -24,7 +24,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         //เริ่มอัพเดท order
         const cancelledOrder = await prisma.order.update({
             where:{id},
-            data:{orderStatus: "CANCELLED"}
+            data:{
+                employeeId:employeeId,
+                orderStatus: "CANCELLED"
+            }
         })
 
         return NextResponse.json({message:"order got cancelled",data:cancelledOrder},{status:200})

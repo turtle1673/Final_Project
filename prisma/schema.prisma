@@ -54,7 +54,7 @@ model Order {
   addon       Int?
   drinkType   drinkType   @default(COLD)
   sweetLevel  sweetness   @default(NORMAL_SUGAR)
-  cupSize     cupSize     @default(MEDIUM)
+  // cupSize     cupSize     @default(MEDIUM)
   amount      Int         @default(1)
   totalPrice  Int
 
@@ -74,7 +74,7 @@ model Ingredient {
   stockItemId Int
   drinkId     Int
   drink       Drink     @relation(fields: [drinkId], references: [id], onDelete: Cascade)
-  stockItem   StockItem @relation(fields: [stockItemId], references: [id])
+  stockItem   StockItem @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
 }
 
 model Restock {

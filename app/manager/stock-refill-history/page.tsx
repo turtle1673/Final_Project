@@ -1,7 +1,7 @@
 import RefillLogs from "@/components/RefillLogs";
 
 export default async function page() {
-    const baseUrl = process.env.PUBLIC_BASE_URL
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const res = await fetch(`${baseUrl}/api/restock`)
     const json = await res.json()
     if (!res.ok) {

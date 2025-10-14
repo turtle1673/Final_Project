@@ -56,7 +56,7 @@ export default async function EmployeeDetails() {
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 shadow rounded flex flex-col justify-center items-center">
-            <p className="text-sm text-teal-500">คำสั่งซื้อที่เหลือหน้าร้าน</p>
+            <p className="text-sm text-teal-500">คำสั่งซื้อที่ปิดไปแล้ว</p>
             <p className="text-3xl font-bold text-teal-700">{totalOrders}</p>
           </div>
           <div className="bg-white p-6 shadow rounded flex flex-col justify-center items-center">
@@ -74,7 +74,7 @@ export default async function EmployeeDetails() {
         {/* Revenue / Avg */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white p-6 shadow rounded flex flex-col justify-center items-center">
-            <p className="text-sm text-teal-500">ทำยอดขายไปแล้ว</p>
+            <p className="text-sm text-teal-500">ทำยอดขายให้ทางร้านไปแล้ว</p>
             <p className="text-3xl font-bold text-teal-700">
               {totalRevenue} บาท
             </p>
@@ -91,7 +91,7 @@ export default async function EmployeeDetails() {
       {/* ฝั่งขวา (Orders List) */}
       <div className="w-1/3 p-8 bg-white shadow-inner overflow-hidden flex flex-col">
         <h2 className="text-2xl font-semibold text-teal-700 mb-4">
-          Orders ทั้งหมด
+          Orders ที่ปิดไปแล้วทั้งหมด
         </h2>
         <div className="overflow-y-auto flex-1 space-y-3 pr-2">
           {staffData.orders.map((o) => (

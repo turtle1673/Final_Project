@@ -1,14 +1,19 @@
 import prisma from "@/lib/prisma"
-import { statusOrder } from "@prisma/client"
+import { Prisma, statusOrder } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams
+        const sorted = searchParams.get("sorted") || "asc"
         const status = searchParams.get("status")
+
+
         const orders = await prisma.order.findMany({
             where: status? { orderStatus:status as statusOrder } : {},
-            orderBy : { createAt : "asc" },
+            orderBy : {
+                createAt : sorted as Prisma.SortOrder
+            },
             include : {drink : true}
         })
         return NextResponse.json({data:orders}, { status: 200 })

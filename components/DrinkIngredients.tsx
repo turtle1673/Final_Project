@@ -1,3 +1,4 @@
+import { calSweetenIngredient } from "@/lib/functions/calSweetenIngredient"
 import { Iitem } from "@/types/item"
 
 interface Ingredient {
@@ -5,7 +6,7 @@ interface Ingredient {
     quantity:string
     stockItem:Iitem
 }
-export default function DrinkIngredients({ingredients} : {ingredients:Ingredient[]}) {
+export default function DrinkIngredients({ingredients,sweetness} : {ingredients:Ingredient[],sweetness:string}) {
   return (
     <>
     <div className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-md">
@@ -20,7 +21,7 @@ export default function DrinkIngredients({ingredients} : {ingredients:Ingredient
               {ing.stockItem.name}
             </p>
             <p className="text-gray-600">
-              {ing.quantity} {ing.stockItem.unit}
+              {ing.stockItem.category === "sweeten ingredient" ? calSweetenIngredient(Number(ing.quantity),sweetness) : ing.quantity} {ing.stockItem.unit}
             </p>
           </div>
         ))}

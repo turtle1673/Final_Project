@@ -31,7 +31,8 @@ export default function TitleTestNav() {
       {session ? (
         <div className="flex items-center gap-6">
           <div className="text-right">
-            <p className="text-gray-800 font-semibold">{session.user.name}</p>
+            <p className="text-gray-700 font-semibold">{session.user.name}</p>
+            <p className="text-teal-600 font-semibold tracking-wider">{session.user.email}</p>
             <p className="text-sm text-gray-500">{session.user.role}</p>
           </div>
           <SignOutButton />

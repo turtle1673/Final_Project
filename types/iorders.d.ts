@@ -1,7 +1,7 @@
 import { Idrink } from "./idrink"
 
 export interface Iorder {
-    id:number
+  id:number
   addon:number
   drinkType:string | "COLD"
   sweetLevel:string

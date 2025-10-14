@@ -82,6 +82,7 @@ export default function page() {
           >
             <option value="">ระบุหมวดหมู่</option>
             <option value="ingredient">ingredient</option>
+            <option value="sweeten ingredient">sweeten ingredient</option>
             <option value="addon">addon</option>
           </select>
         </div>
